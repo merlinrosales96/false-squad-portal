@@ -4,6 +4,8 @@ import { Box, Stack, Typography, Button } from '@mui/material';
 const Banner = () => {
   return (
     <Box
+      component="section"
+      id='home'
       sx={{
         height: '100vh',
         //backgroundImage: `url(${banner})`,
@@ -36,7 +38,7 @@ const Hero = () => {
   return (
     <>
 
-        <Banner />
+      <Banner />
     </>
   );
 };

@@ -1,4 +1,4 @@
-import { Box, Container, Grid, IconButton, Typography } from "@mui/material"
+/*import { Box, Container, Grid, IconButton, Typography } from "@mui/material"
 import { Instagram, YouTube, Email } from "@mui/icons-material"
 import { FaTiktok, FaDiscord } from "react-icons/fa"
 
@@ -68,6 +68,53 @@ export default function Footer() {
                 </Grid>
                 <Typography variant="subtitle1" className="text-center">{('footer:Copyright')}</Typography>
             </Container>
+        </Box>
+    )
+}*/
+
+import { Box, IconButton, Typography } from "@mui/material"
+import { Instagram, YouTube } from "@mui/icons-material"
+import { FaTiktok, FaDiscord } from "react-icons/fa";
+
+
+export default function Footer() {
+
+    const year = new Date().getFullYear();
+
+    return (
+        <Box
+            component="footer"
+            sx={{
+                py: 3,
+                px: 2,
+                mt: 'auto',
+                backgroundColor: (theme) =>
+                    theme.palette.mode === 'light'
+                        ? theme.palette.grey[500]
+                        : theme.palette.grey[900],
+            }}
+        >
+            <div className="container mx-auto max-w-5xl px-4 md:px-6">
+                <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+                    <div className="space-y-2">
+                        <Typography variant="h6" gutterBottom className="text-lg font-semibold">
+                            Redes Sociales
+                        </Typography>
+                        <div className="flex items-center space-x-4">
+                            <IconButton href="https://www.tiktok.com/@false.squad" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-transform duration-300 ease-in-out transform hover:scale-110" color="primary">
+                                <FaTiktok />
+                            </IconButton>
+                            <IconButton href="https://www.instagram.com/false.squad/" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-transform duration-300 ease-in-out transform hover:scale-110" color="inherit">
+                                <Instagram />
+                            </IconButton>
+                            <IconButton href="https://www.youtube.com/@falsesquadtalks" target="_blank" color="error" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-transform duration-300 ease-in-out transform hover:scale-110">
+                                <YouTube />
+                            </IconButton>
+                        </div>
+                    </div>
+                </div>
+                <Typography variant="subtitle1" className="text-center">{`© ${year} False Squad. Todos los derechos reservados.`}</Typography>
+            </div>
         </Box>
     )
 }
