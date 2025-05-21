@@ -1,9 +1,9 @@
-import merlin from '../assets/images/members/merlin.png';
-import merlino from '../assets/images/members/merlino.png';
-import luis from '../assets/images/members/luis.png';
-import luisito from '../assets/images/members/luisito.png';
-import angel from '../assets/images/members/angel.png';
-import bettino from '../assets/images/members/bettino.png';
+import merlin from '../../public/images/members/big/merlino.png';
+import merlino from '../../public/images/members/text/merlino.png';
+import luis from '../../public/images/members/big/luisito.png';
+import luisito from '../../public/images/members/text/luisito.png';
+import angel from '../../public/images/members/big/bettino.png';
+import bettino from '../../public/images/members/text/bettino.png';
 
 
 export const Members = [

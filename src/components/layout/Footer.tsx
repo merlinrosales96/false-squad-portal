@@ -74,7 +74,7 @@ export default function Footer() {
 
 import { Box, IconButton, Typography } from "@mui/material"
 import { Instagram, YouTube } from "@mui/icons-material"
-import { FaTiktok, FaDiscord } from "react-icons/fa";
+import { FaTiktok } from "react-icons/fa";
 
 
 export default function Footer() {
@@ -91,7 +91,7 @@ export default function Footer() {
                 backgroundColor: (theme) =>
                     theme.palette.mode === 'light'
                         ? theme.palette.grey[500]
-                        : theme.palette.grey[900],
+                        : "rgba(180,5,178,0.2)",
             }}
         >
             <div className="container mx-auto max-w-5xl px-4 md:px-6">

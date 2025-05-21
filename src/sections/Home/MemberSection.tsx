@@ -1,9 +1,9 @@
-import logo from '../../assets/images/logo.png';
+import logo from '/images/logo.png';
 import React, { useState, useRef } from 'react';
 import { Box, Card, CardMedia, Stack } from '@mui/material';
 import { Members } from '../../utils/MembersList';
 import { Image } from '../../components/Image';
-import miembros from '../../assets/images/miembros.png';
+import miembros from '../../../public/images/sections/miembros.png';
 
 const MembersSection = () => {
     const defaultImage = logo;
@@ -56,12 +56,7 @@ const MembersSection = () => {
                     src={displayImage}
                     style={{ zIndex: -1 }}
                     alt="Imagen Principal"
-                    className={` 
-      w-full h-full object-cover aspect-auto
-      transition-opacity duration-300 ease-out
-      ${animating === 'slideUp' ? 'animate-stretch-up' : ''}
-      ${animating === 'fadeOut' ? 'animate-fade-out' : ''}
-    `}
+                    className={`w-full h-full object-cover aspect-auto transition-opacity duration-300 ease-out ${animating === 'slideUp' ? 'animate-stretch-up' : ''} ${animating === 'fadeOut' ? 'animate-fade-out' : ''}`}
                 />
             </Box>
 

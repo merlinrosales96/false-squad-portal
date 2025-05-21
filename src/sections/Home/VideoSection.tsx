@@ -1,7 +1,6 @@
-import { Box, Grid, Typography, Button, Container } from '@mui/material';
-import { Email } from '@mui/icons-material';
+/*import { Box, Grid, Container } from '@mui/material';
 import { Image } from '../../components/Image';
-import video from '../../assets/images/videos.png';
+import video from '../../../public/images/sections/videos.png';
 
 const VideoSection = () => {
 
@@ -51,4 +50,68 @@ const VideoSection = () => {
     );
 };
 
-export default VideoSection;
+export default VideoSection;*/
+
+import React from "react";
+import { Box, Typography, Card, CardMedia, CardContent } from "@mui/material";
+import { Image } from "../../components/Image";
+
+const videos = [
+    {
+        id: "B9synWjqBn8",
+        title: "Fein"
+    },
+    {
+        id: "5EpyN_6dqyk?si=CgKWGkcD-KJn1ibu",
+        title: "Timeless"
+    },
+    {
+        id: "dQw4w9WgXcQ",
+        title: "Never gonna give you up"
+    },
+    {
+        id: "eVTXPUF4Oz4",
+        title: "In the end"
+    },
+    {
+        id: "kXYiU_JCYtU",
+        title: "Numb"
+    },
+    {
+        id: "fJ9rUzIMcZQ",
+        title: "Bohemian Rhapsody"
+    }
+];
+
+const YouTubeGallery: React.FC = () => {
+    return (
+        <Box component="section" id='videos' className="flex flex-col items-center gap-6 p-6">
+            <Image image="/images/sections/videos.png" alt="" className="mx-auto overflow-hidden rounded-xl object-cover object-center" />
+
+            <Box>
+                <Box className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+                    {videos.map((video) => (
+                        <Card key={video.id}>
+                            <CardMedia>
+                                <iframe
+                                    className="w-full h-64 aspect-video"
+                                    src={`https://www.youtube.com/embed/${video.id}`}
+                                    title={video.title}
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowFullScreen
+                                ></iframe>
+                            </CardMedia>
+                            <CardContent>
+                                <Typography variant="h6">
+                                    {video.title}
+                                </Typography>
+                            </CardContent>
+                        </Card>
+                    ))}
+                </Box>
+            </Box>
+        </Box>
+    );
+};
+
+export default YouTubeGallery;

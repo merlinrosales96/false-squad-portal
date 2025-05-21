@@ -4,9 +4,12 @@ import type { PaletteMode } from "@mui/material/styles";
 import { CssBaseline } from "@mui/material";
 
 export const ThemeProviderWrapper = ({ children }: { children: React.ReactNode }) => {
-    const [mode] = useState<PaletteMode>('dark');
+  const [mode] = useState<PaletteMode>('dark');
 
   const theme = createTheme({
+    typography: {
+      fontFamily: 'RussoOne, Arial',
+    },
     palette: {
       mode,
       ...(mode === 'light'
@@ -34,8 +37,8 @@ export const ThemeProviderWrapper = ({ children }: { children: React.ReactNode }
             main: '#f48fb1',
           },
           background: {
-            default: '#121B16',
-            paper: '#001C1C',
+            default: '#030000',
+            paper: '#07898A',
           },
           text: {
             primary: '#ffffff',

@@ -166,7 +166,7 @@ import * as React from 'react';
 import { Box, AppBar, Avatar, Toolbar, Container, Divider, Typography, MenuItem, Drawer, IconButton, Stack } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
-import Logo from '../../assets/images/logo.png';
+import Logo from '/images/logo.png';
 import { NavButtonsLeft, NavButtonsRight } from '../../utils/NavbarList';
 import { useLocation, useNavigate } from 'react-router-dom';
 /*import LanguageSwitcher from '../molecules/LanguageSwitcher';
@@ -180,6 +180,7 @@ import SocialButtons from '../molecules/SocialButton';*/
 };*/
 
 function NavBar() {
+
 
   const location = useLocation();
   const navigate = useNavigate();
@@ -226,7 +227,7 @@ function NavBar() {
           boxShadow: 0,
           bgcolor: 'transparent',
           backgroundImage: 'none',
-          mt: 0
+          mt: 1
         }}
       >
         <Container maxWidth="lg">
@@ -238,7 +239,7 @@ function NavBar() {
               justifyContent: 'space-between',
               flexShrink: 0,
               borderRadius: '15px',
-              bgcolor: 'transparent',
+              bgcolor: 'rgba(255,0,255,0.11)',
               maxHeight: 40,
               border: '0',
               borderColor: 'divider',
@@ -275,7 +276,7 @@ function NavBar() {
                                     alt="logo of sitemark"
                                 />
                             </Typography>*/}
-              <Avatar alt="Logo" onClick={() => goHome()} src={Logo} sx={{ width: 64, height: 64, mx: 'auto', my: 2 }} />
+              <Avatar alt="Logo" onClick={() => goHome()} src={Logo} sx={{ width: 72, height: 72, mx: 'auto', my: 2, p: 1 }} />
             </Box>
 
             {/* Right Container */}

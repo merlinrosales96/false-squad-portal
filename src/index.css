@@ -1,4 +1,10 @@
 @import "tailwindcss";
+@plugin "@midudev/tailwind-animations";
+
+@font-face {
+  font-family: 'RussoOne';
+  src: url('./assets/fonts/RussoOne-Regular.ttf') format('truetype');
+}
 
 .absolute {
   position: absolute;
@@ -125,6 +131,25 @@ button {
   transition: border-color 0.25s;
 }
 
+body::-webkit-scrollbar {
+  width: 12px;
+  /* width of the entire scrollbar */
+}
+
+body::-webkit-scrollbar-track {
+  background: rgb(225, 233, 255);
+  /* color of the tracking area */
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: rgb(187, 63, 187);
+  /* color of the scroll thumb */
+  border-radius: 20px;
+  /* roundness of the scroll thumb */
+  border: 3px solid rgb(225, 233, 255);
+  /* creates padding around scroll thumb */
+}
+
 button:hover {
   border-color: #646cff;
 }
@@ -132,6 +157,28 @@ button:hover {
 button:focus,
 button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
+}
+
+.gradient {
+  img {
+    mask-image: linear-gradient(black 95%, transparent);
+  }
+}
+
+.slick-slide > div {
+  display: flex;
+  justify-content: center;
+}
+
+@layer utilities {
+  .mask-bottom-fade {
+    mask-image: linear-gradient(to bottom, black 95%, transparent);
+    -webkit-mask-image: linear-gradient(to bottom, black 95%, transparent);
+    mask-repeat: no-repeat;
+    -webkit-mask-repeat: no-repeat;
+    mask-size: 100% 100%;
+    -webkit-mask-size: 100% 100%;
+  }
 }
 
 @media (prefers-color-scheme: light) {
@@ -148,3 +195,4 @@ button:focus-visible {
     background-color: #f9f9f9;
   }
 }
+
