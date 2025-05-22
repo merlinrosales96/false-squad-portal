@@ -99,36 +99,25 @@ export default MemberHero;*/
 
 
 // Componente de React adaptado con Material UI y Tailwind CSS
-import React, { useState, useEffect } from 'react';
-import { Box, Typography, Link } from '@mui/material';
+import { useState, useEffect } from 'react';
+import { Box, Typography } from '@mui/material';
 import { MEMBERS } from '../../const/members';
 import SelectMember from '../../components/Members/SelectMember';
 
 const LandingPage = () => {
-  const [selectedBoxer, setSelectedBoxer] = useState(MEMBERS[0]);
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
-  const [currentFighterId, setCurrentFighterId] = useState<string>();
+  //const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   const defaultImage = '/images/logo.png';
   const [image, setImage] = useState<string>(defaultImage);
   const [name, setName] = useState<string>(defaultImage);
   const [show, setShow] = useState(false);
-  const [animating, setAnimating] = useState<'none' | 'slideUp' | 'fadeOut'>('none');
 
   useEffect(() => {
     const handleResize = () => {
-      setIsMobile(window.innerWidth <= 768);
+      //setIsMobile(window.innerWidth <= 768);
     };
     window.addEventListener('resize', handleResize);
     return () => window.removeEventListener('resize', handleResize);
   }, []);
-
-  const handleBoxerCardHovered = (id: string) => {
-    setCurrentFighterId(id);
-  };
-
-  const handleBoxerCardExit = () => {
-    setCurrentFighterId('');
-  };
 
   return (
     <section id='members' className="relative flex min-h-screen w-full">
@@ -177,7 +166,6 @@ const LandingPage = () => {
         </Box>
         <SelectMember
           members={MEMBERS}
-          selectedMember={selectedBoxer}
           setImage={setImage}
           setShow={setShow}
           setName={setName}

@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React/*, { useRef }*/ from 'react';
 import { Card, CardMedia, CardContent, Typography } from '@mui/material';
 
 interface Props {
@@ -11,7 +11,7 @@ interface Props {
 }
 
 const MemberCard: React.FC<Props> = ({ id, name, extraClass = '', setShow, setImage, setName }) => {
-  const timeoutRef = useRef<{ enter: number | null; leave: number | null }>({ enter: null, leave: null });
+  //const timeoutRef = useRef<{ enter: number | null; leave: number | null }>({ enter: null, leave: null });
 
 /*const handlePointerEnter = () => {
   // Cancelamos cualquier timeout pendiente para leave o enter

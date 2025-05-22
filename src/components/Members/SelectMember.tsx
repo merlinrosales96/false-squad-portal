@@ -1,22 +1,21 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import MemberCard from './MemberCard';
 import MemberBigImage from './MemberBigImage';
 import type { Members } from '../../type/members';
 import Slider from 'react-slick';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
+import { Box } from "@mui/material";
+import { useRef } from "react";
 
 interface Props {
   members: Members[];
-  selectedMember: Members;
   setImage: React.Dispatch<React.SetStateAction<string>>;
   setShow: React.Dispatch<React.SetStateAction<boolean>>;
   setName: React.Dispatch<React.SetStateAction<string>>;
 }
 
 const SelectMember: React.FC<Props> = ({ members, setImage, setShow, setName }) => {
-  const [showSlider, setShowSlider] = useState(true);
-  const [hasResized, setHasResized] = useState(false);
 
   const firstRow = members.slice(0, 6);
   const leftRow = firstRow.slice(0, 3);
@@ -33,24 +32,31 @@ const SelectMember: React.FC<Props> = ({ members, setImage, setShow, setName }) 
   const reverseDelaySecondRow = [...animationDelaySecondRow].reverse();
 
   const settings = {
-    dots: false,
+    dots: true,
     infinite: true,
     speed: 500,
     slidesToShow: 3,
     slidesToScroll: 1,
-    arrows: false,
+    arrows: true,
     responsive: [
       {
         breakpoint: 768,
         settings: {
-          slidesToShow: 3,
+          slidesToShow: 5,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 560,
+        settings: {
+          slidesToShow: 4,
           slidesToScroll: 1,
         },
       },
       {
         breakpoint: 480,
         settings: {
-          slidesToShow: 1,
+          slidesToShow: 3,
           slidesToScroll: 1,
         },
       },
@@ -73,19 +79,22 @@ const SelectMember: React.FC<Props> = ({ members, setImage, setShow, setName }) 
       />
     </div>
   );
-
+  
+  const sliderRef = useRef<Slider>(null);
   useEffect(() => {
     const handleResize = () => {
-      if (!hasResized) {
-        setShowSlider(false);
-        setHasResized(true);
-        setTimeout(() => setShowSlider(true), 0);
-      }
+      sliderRef.current?.slickGoTo(0); // fuerza recalculado
     };
 
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
-  }, [hasResized]);
+    window.addEventListener("resize", handleResize);
+
+    // También al montar
+    setTimeout(() => {
+      handleResize();
+    }, 100);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
 
   return (
@@ -148,13 +157,22 @@ const SelectMember: React.FC<Props> = ({ members, setImage, setShow, setName }) 
       {/* Mobile Layout */}
       <div className="-mt-20 flex flex-col items-center justify-center md:mt-32 md:hidden">
         <div className="mt-8 w-full max-w-[100vw] px-4">
-          {showSlider && (
+          {/*showSlider && (
             <Slider {...settings}>
               {members.map(({ id, name }) =>
                 renderMemberCard(id, name, id, 'px-2 flex justify-center')
               )}
             </Slider>
-          )}
+          )*/}
+
+          <Box px={2}>
+            <Slider {...settings} ref={sliderRef}>
+              {members.map(({ id, name }) =>
+                renderMemberCard(id, name, id, 'px-2 flex justify-center')
+              )}
+            </Slider>
+          </Box>
+
         </div>
       </div>
     </>

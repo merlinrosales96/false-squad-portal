@@ -163,7 +163,7 @@ export default Navbar;
 
 
 import * as React from 'react';
-import { Box, AppBar, Avatar, Toolbar, Container, Divider, Typography, MenuItem, Drawer, IconButton, Stack } from '@mui/material';
+import { Box, AppBar, Avatar, Toolbar, useScrollTrigger, Container, Divider, Typography, MenuItem, Drawer, IconButton, Stack } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import KeyboardBackspaceIcon from '@mui/icons-material/KeyboardBackspace';
 import Logo from '/images/logo.png';
@@ -219,6 +219,11 @@ function NavBar() {
     }
   };
 
+  const trigger = useScrollTrigger({
+        disableHysteresis: true,
+        threshold: 0,
+    });
+
   return (
     <div>
       <AppBar
@@ -239,7 +244,7 @@ function NavBar() {
               justifyContent: 'space-between',
               flexShrink: 0,
               borderRadius: '15px',
-              bgcolor: 'rgba(255,0,255,0.11)',
+              bgcolor: trigger ? 'rgba(255,0,255,0.11)' : 'transparent',
               maxHeight: 40,
               border: '0',
               borderColor: 'divider',

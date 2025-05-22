@@ -131,17 +131,17 @@ button {
   transition: border-color 0.25s;
 }
 
-body::-webkit-scrollbar {
+::-webkit-scrollbar {
   width: 12px;
   /* width of the entire scrollbar */
 }
 
-body::-webkit-scrollbar-track {
+::-webkit-scrollbar-track {
   background: rgb(225, 233, 255);
   /* color of the tracking area */
 }
 
-body::-webkit-scrollbar-thumb {
+::-webkit-scrollbar-thumb {
   background-color: rgb(187, 63, 187);
   /* color of the scroll thumb */
   border-radius: 20px;
