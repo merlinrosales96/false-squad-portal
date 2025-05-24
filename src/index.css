@@ -30,57 +30,6 @@
   left: 0;
 }
 
-
-@keyframes slideUp {
-  0% {
-    transform: translateY(0);
-    opacity: 1;
-  }
-
-  100% {
-    transform: translateY(-100%);
-    opacity: 0;
-  }
-}
-
-.animate-slide-up {
-  animation: slideUp 0.3s forwards ease-out;
-}
-
-
-@keyframes fadeOut {
-  0% {
-    opacity: 1;
-  }
-
-  100% {
-    opacity: 0;
-  }
-}
-
-.animate-fade-out {
-  animation: fadeOut 0.5s forwards ease-out;
-}
-
-@keyframes stretchUp {
-  0% {
-    transform: scaleY(1);
-    opacity: 1;
-    transform-origin: bottom center;
-  }
-
-  100% {
-    transform: scaleY(2);
-    /* se estira al doble */
-    opacity: 0;
-    transform-origin: bottom center;
-  }
-}
-
-.animate-stretch-up {
-  animation: stretchUp 0.4s forwards ease-out;
-}
-
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -150,6 +99,14 @@ button {
   /* creates padding around scroll thumb */
 }
 
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
 button:hover {
   border-color: #646cff;
 }
@@ -168,6 +125,21 @@ button:focus-visible {
 .slick-slide > div {
   display: flex;
   justify-content: center;
+}
+
+.mask-fade-text {
+  mask-image: linear-gradient(to bottom, transparent 5%, black 6%, black 95%, transparent 100%);
+}
+
+@keyframes fighter-select {
+  from {
+    opacity: 0.5;
+    border-color: rgba(255, 20, 147, 1);
+  }
+  to {
+    opacity: 1;
+    border-color: rgba(255, 20, 147, 0.5);
+  }
 }
 
 @layer utilities {
