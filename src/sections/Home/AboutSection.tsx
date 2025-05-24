@@ -5,7 +5,7 @@ export default function AboutSection() {
 
     return (
         <Box component="section" id="about" sx={{
-            display: 'flex', flexDirection: 'column', alignItems: 'center', px: 6, backgroundImage: `url(/images/about-banner.jpg)`, height: '100vh',
+            display: 'flex', flexDirection: 'column', alignItems: 'center', px: 6, backgroundImage: `url(/images/about-banner.png)`, height: '100vh',
             width: '100%', backgroundSize: 'cover', // Escala para cubrir todo el Box
             backgroundPosition: 'center',
             backgroundRepeat: 'no-repeat',
