@@ -85,7 +85,7 @@ const videos = [
 
 const YouTubeGallery: React.FC = () => {
     return (
-        <Box component="section" id='videos' className="flex flex-col items-center gap-6 p-6">
+        <Box component="section" id='videos' sx={{height:"100vh"}} className="flex flex-col items-center gap-6 p-6 pt-16 mb-20">
             <Image image="/images/sections/videos.png" alt="" className="mx-auto overflow-hidden rounded-xl object-cover object-center" />
 
             <Box>
