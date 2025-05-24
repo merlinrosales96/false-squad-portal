@@ -16,7 +16,7 @@ export const MEMBERS = [
         name: "Daniel",
     },
     {
-        id: "gabo",
+        id: "jibrill",
         name: "Gabriel",
     },
     {
