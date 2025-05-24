@@ -1,74 +1,165 @@
-import React/*, { useRef }*/ from 'react';
+import React, { useEffect, useState } from 'react';
 import { Card, CardMedia, CardContent, Typography } from '@mui/material';
+import { $ } from '../../lib/dom-selector';
 
 interface Props {
   id: string;
   name: string;
   extraClass?: string;
-  setImage: React.Dispatch<React.SetStateAction<string>>;
-  setName: React.Dispatch<React.SetStateAction<string>>;
-  setShow: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const MemberCard: React.FC<Props> = ({ id, name, extraClass = '', setShow, setImage, setName }) => {
-  //const timeoutRef = useRef<{ enter: number | null; leave: number | null }>({ enter: null, leave: null });
+const MemberCard: React.FC<Props> = ({ id, name, extraClass }: Props) => {
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
+  const [$landing, setLanding] = useState($('#landing'));
+  let currentFighterId: string | null = null
+  let hideFighterTimer: ReturnType<typeof setTimeout>
+  const boxerCards = document.querySelectorAll('.boxer-card')
 
-/*const handlePointerEnter = () => {
-  // Cancelamos cualquier timeout pendiente para leave o enter
-  if (timeoutRef.current.leave) {
-    clearTimeout(timeoutRef.current.leave);
-    timeoutRef.current.leave = null;
-  }
-  if (timeoutRef.current.enter) {
-    clearTimeout(timeoutRef.current.enter);
-    timeoutRef.current.enter = null;
-  }
+  useEffect(() => {
+    const handleResize = () => {
+      setLanding($('#landing'))
+      const mobile = window.matchMedia('(max-width: 768px)').matches;
+      setIsMobile(mobile);
+      const $fighterSelector = document.getElementById('selectorFighter');
+      if (mobile && $fighterSelector) {
+        $fighterSelector.remove(); // cuidado: esto elimina el elemento del DOM permanentemente
+      }
+    };
 
-  const image = `/images/members/big/${id}.png`;
+    // Ejecutar al inicio
+    handleResize();
 
-  setAnimation('slideUp');
+    // Agregar el listener
+    window.addEventListener('resize', handleResize);
 
-  timeoutRef.current.enter = window.setTimeout(() => {
-    setImage(image);
-    setAnimation('none');
-    timeoutRef.current.enter = null;
-  }, 300);
-};
+    // Limpieza al desmontar el componente
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
-const handlePointerLeave = () => {
-  // Cancelamos cualquier timeout pendiente para enter o leave
-  if (timeoutRef.current.enter) {
-    clearTimeout(timeoutRef.current.enter);
-    timeoutRef.current.enter = null;
-  }
-  if (timeoutRef.current.leave) {
-    clearTimeout(timeoutRef.current.leave);
-    timeoutRef.current.leave = null;
-  }
+  useEffect(() => {
+    const handleResize = () => {
+      setLanding($('#landing'))
+      const mobile = window.matchMedia('(max-width: 768px)').matches;
+      setIsMobile(mobile);
+      const $fighterSelector = document.getElementById('selectorFighter');
+      if (mobile && $fighterSelector) {
+        $fighterSelector.remove(); // cuidado: esto elimina el elemento del DOM permanentemente
+      }
+    };
 
-  if (displayImage === defaultImage) return; // si está seleccionado no hacemos fadeOut
+    // Ejecutar al inicio
+    handleResize();
 
-  timeoutRef.current.leave = window.setTimeout(() => {
-    setAnimation('fadeOut');
-    timeoutRef.current.leave = window.setTimeout(() => {
-      setImage(defaultImage);
-      setAnimation('none');
-      timeoutRef.current.leave = null;
-    }, 500);
-  }, 1000);
-};
-*/
+    // Agregar el listener
+    window.addEventListener('resize', handleResize);
 
-  const handlePointerEnter = () => {
-    setShow(true);
-    setImage(`/images/members/big/${id}.png`);
-    setName(`/images/members/text/${id}.png`);
+    // Limpieza al desmontar el componente
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
+
+  const handlePointerEnter = (id: string) => {
+    if (currentFighterId) {
+      // si ya hay un luchador visible, lo ocultamos
+      clearTimeout(hideFighterTimer)
+
+      const heroText = $(`[data-id="hero-text-${currentFighterId}"]`)
+      const heroImage = $(`[data-id="hero-image-${currentFighterId}"]`)
+      const heroMaskFadeText = $(`#mask-fade-text-${currentFighterId}`)
+
+      heroText?.classList.add('hidden')
+      heroImage?.classList.add('hidden')
+      heroMaskFadeText?.classList.remove('translate-x-full')
+      heroMaskFadeText?.classList.add('-translate-x-full')
+      currentFighterId = null
+    }
+
+    const heroText = $(`[data-id="hero-text-${id}"]`)
+    const heroImage = $(`[data-id="hero-image-${id}"]`)
+    const heroMaskFadeText = $(`#mask-fade-text-${id}`)
+
+    if (heroText && heroImage) {
+      heroText.classList.remove('animate-zoom-out')
+      heroImage.classList.remove('animate-fade-out-down')
+    }
+
+    // si el luchador que entras es el mismo que ya se muestra
+    // entonces no hacemos nada
+    if (currentFighterId === id) return
+
+    // si ya estamos mostrando un luchador, tenemos que ocultarlo
+    if (currentFighterId) {
+      const currentHeroText = $(`[data-id="hero-text-${currentFighterId}"]`)
+      const currentHeroImage = $(`[data-id="hero-image-${currentFighterId}"]`)
+      const currentHeroMaskFadeText = $(`#mask-fade-text-${currentFighterId}`)
+
+      if (currentHeroText && currentHeroMaskFadeText && currentHeroImage) {
+        currentHeroText.classList.add('hidden')
+        currentHeroImage.classList.add('hidden')
+
+        currentHeroText.classList.remove('animate-zoom-in')
+        currentHeroImage.classList.remove('animate-slide-up-fade')
+        currentHeroMaskFadeText?.classList.remove('translate-x-full')
+        currentHeroMaskFadeText?.classList.add('-translate-x-full')
+      }
+    }
+
+    $landing?.classList.add('hidden')
+
+    // mostramos el luchador que quiere ver el usuario
+    heroText?.classList.remove('hidden')
+    heroText?.classList.add('animate-zoom-in')
+    heroImage?.classList.remove('hidden')
+    heroImage?.classList.add('animate-slide-up-fade')
+    heroMaskFadeText?.classList.remove('-translate-x-full')
+    heroMaskFadeText?.classList.add('translate-x-full')
+
+    currentFighterId = id
   };
 
   const handlePointerLeave = () => {
-    setShow(false);
-    setImage(`/images/logo.png`);
-    setName('');
+    let showFighter = false
+
+    if (!currentFighterId) return
+
+    if (isMobile) {
+      for (const card of boxerCards) {
+        if (card.getAttribute('data-id') === currentFighterId) {
+          if (card.getAttribute('data-selected') === 'true') {
+            showFighter = true
+            break
+          }
+        }
+      }
+
+      if (showFighter) return
+    }
+    $landing?.classList.remove('hidden')
+
+    const heroText = $(`[data-id="hero-text-${currentFighterId}"]`)
+    const heroImage = $(`[data-id="hero-image-${currentFighterId}"]`)
+    const heroMaskFadeText = $(`#mask-fade-text-${currentFighterId}`)
+
+    if (heroText && heroImage) {
+      heroText.classList.remove('animate-zoom-int')
+      heroImage.classList.remove('animate-slide-up-fade')
+
+      heroText.classList.add('animate-zoom-out')
+      heroImage.classList.add('animate-fade-out-down')
+
+      heroMaskFadeText?.classList.remove('translate-x-full')
+      heroMaskFadeText?.classList.add('-translate-x-full')
+
+      heroText.classList.add('hidden')
+      heroImage.classList.add('hidden')
+      currentFighterId = null
+
+      hideFighterTimer = setTimeout(() => {
+      }, 500)
+    }
   };
 
   return (
@@ -81,12 +172,12 @@ const handlePointerLeave = () => {
       <Card
         key={id}
         className="relative rounded-lg"
-        onMouseEnter={() => handlePointerEnter()}
+        onMouseEnter={() => handlePointerEnter(id)}
         onMouseLeave={() => handlePointerLeave()}>
         <CardMedia
           component="img"
           className="aspect-[900/1200] h-full w-full bg-gradient-to-t from-gray-50/40 via-gray-50/20 to-transparent object-cover transition-transform duration-500 group-hover:scale-110"
-          image={`/images/members/big/${id}.png`}
+          image={`/images/members/big/${id}.webp`}
           alt={`Tarjeta del miembro ${name}`}
           loading="lazy"
         />
