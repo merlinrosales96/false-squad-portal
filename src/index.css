@@ -80,32 +80,19 @@ button {
   transition: border-color 0.25s;
 }
 
-::-webkit-scrollbar {
+/*::-webkit-scrollbar {
   width: 12px;
-  /* width of the entire scrollbar */
 }
 
 ::-webkit-scrollbar-track {
   background: rgb(225, 233, 255);
-  /* color of the tracking area */
 }
 
 ::-webkit-scrollbar-thumb {
   background-color: rgb(187, 63, 187);
-  /* color of the scroll thumb */
   border-radius: 20px;
-  /* roundness of the scroll thumb */
   border: 3px solid rgb(225, 233, 255);
-  /* creates padding around scroll thumb */
-}
-
-.no-scrollbar::-webkit-scrollbar {
-  display: none;
-}
-.no-scrollbar {
-  -ms-overflow-style: none;
-  scrollbar-width: none;
-}
+}*/
 
 button:hover {
   border-color: #646cff;
