@@ -53,63 +53,115 @@ const VideoSection = () => {
 export default VideoSection;*/
 
 import React from "react";
-import { Box, Typography, Card, CardMedia, CardContent } from "@mui/material";
+import { Box, Typography, Card, alpha, Container } from "@mui/material";
 import { Image } from "../../components/Image";
 
 const videos = [
-    {
-        id: "B9synWjqBn8",
-        title: "Fein"
-    },
-    {
-        id: "5EpyN_6dqyk?si=CgKWGkcD-KJn1ibu",
-        title: "Timeless"
-    },
-    {
-        id: "dQw4w9WgXcQ",
-        title: "Never gonna give you up"
-    },
-    {
-        id: "eVTXPUF4Oz4",
-        title: "In the end"
-    },
-    {
-        id: "kXYiU_JCYtU",
-        title: "Numb"
-    },
-    {
-        id: "fJ9rUzIMcZQ",
-        title: "Bohemian Rhapsody"
-    }
+    { id: "B9synWjqBn8", title: "Fein", featured: true },
+    { id: "5EpyN_6dqyk", title: "Timeless" },
+    { id: "dQw4w9WgXcQ", title: "Never Gonna Give You Up" },
+    { id: "eVTXPUF4Oz4", title: "In the End" },
+    { id: "kXYiU_JCYtU", title: "Numb" },
+    { id: "fJ9rUzIMcZQ", title: "Bohemian Rhapsody" }
 ];
 
 const YouTubeGallery: React.FC = () => {
-    return (
-        <Box component="section" id='videos' sx={{height:"100vh"}} className="flex flex-col items-center gap-6 p-6 pt-16 mb-20">
-            <Image image="/images/sections/videos.png" alt="" className="mx-auto overflow-hidden rounded-xl object-cover object-center" />
+    // Función para limpiar el ID por si viene con parámetros de share
+    const getCleanId = (id: string) => id.split('?')[0];
 
-            <Box>
-                <Box className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+    return (
+        <Box 
+            component="section" 
+            id='videos' 
+            sx={{ 
+                minHeight: "100vh", 
+                py: 12,
+                bgcolor: 'background.default'
+            }}
+        >
+            <Container maxWidth="lg">
+                <Box sx={{ mb: 8, textAlign: 'center' }}>
+                    <Image 
+                        image="/images/sections/videos.webp" 
+                        alt="Videos Title" 
+                        className="mx-auto mb-4 w-full max-w-[350px]" 
+                    />
+                    <Typography 
+                        variant="h6" 
+                        sx={{ 
+                            fontFamily: 'RussoOne', 
+                            color: 'secondary.main', 
+                            letterSpacing: 2,
+                            opacity: 0.8 
+                        }}
+                    >
+                        HIGHLIGHTS & FAILS
+                    </Typography>
+                </Box>
+
+                <Box 
+                    sx={{
+                        display: 'grid',
+                        gap: 3,
+                        gridTemplateColumns: {
+                            xs: '1fr',
+                            sm: 'repeat(2, 1fr)',
+                            md: 'repeat(3, 1fr)'
+                        },
+                        gridAutoRows: 'minmax(250px, auto)'
+                    }}
+                >
                     {videos.map((video) => (
-                        <Card key={video.id}>
-                            <CardMedia>
+                        <Card 
+                            key={video.id}
+                            sx={{
+                                borderRadius: '20px',
+                                bgcolor: alpha('#121212', 0.5),
+                                backdropFilter: 'blur(10px)',
+                                border: '1px solid rgba(255, 255, 255, 0.05)',
+                                transition: 'all 0.3s ease-in-out',
+                                position: 'relative',
+                                overflow: 'hidden',
+                                // El video destacado ocupa más espacio
+                                gridColumn: {
+                                    md: video.featured ? 'span 2' : 'span 1'
+                                },
+                                gridRow: {
+                                    md: video.featured ? 'span 2' : 'span 1'
+                                },
+                                '&:hover': {
+                                    transform: 'translateY(-5px)',
+                                    borderColor: 'primary.main',
+                                    boxShadow: (theme) => `0 10px 30px ${alpha(theme.palette.primary.main, 0.2)}`,
+                                }
+                            }}
+                        >
+                            <Box sx={{ width: '100%', height: video.featured ? '85%' : '75%' }}>
                                 <iframe
-                                    className="w-full h-64 aspect-video"
-                                    src={`https://www.youtube.com/embed/${video.id}`}
+                                    className="w-full h-full border-0"
+                                    src={`https://www.youtube.com/embed/${getCleanId(video.id)}?modestbranding=1&rel=0`}
                                     title={video.title}
                                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                     allowFullScreen
                                 ></iframe>
-                            </CardMedia>
-                            <CardContent>
-                                <Typography variant="h6">
+                            </Box>
+                            
+                            <Box sx={{ p: 2, textAlign: 'center' }}>
+                                <Typography 
+                                    variant="subtitle1" 
+                                    sx={{ 
+                                        fontFamily: 'RussoOne', 
+                                        color: 'text.primary',
+                                        fontSize: video.featured ? '1.2rem' : '0.9rem'
+                                    }}
+                                >
                                     {video.title}
                                 </Typography>
-                            </CardContent>
+                            </Box>
                         </Card>
                     ))}
                 </Box>
-            </Box>
+            </Container>
         </Box>
     );
 };

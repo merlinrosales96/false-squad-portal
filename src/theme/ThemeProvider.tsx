@@ -31,18 +31,14 @@ export const ThemeProviderWrapper = ({ children }: { children: React.ReactNode }
         }
         : {
           primary: {
-            main: '#008080',
-          },
-          secondary: {
-            main: '#f48fb1',
+            main: '#00cec9', // Un cian más eléctrico
           },
           background: {
-            default: '#030000',
-            paper: '#07898A',
+            default: '#0a0a0a', // Casi negro, pero con aire
+            paper: '#1a1a1a',   // Un gris oscuro que resalte del fondo
           },
-          text: {
-            primary: '#ffffff',
-            secondary: '#b0bec5',
+          secondary: {
+            main: '#a29bfe', // Un lila suave para contrastar clips o logros
           },
         }),
     },

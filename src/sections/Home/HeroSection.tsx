@@ -1,138 +1,163 @@
-//import { Box, Stack, Typography, Button } from '@mui/material';
-//import banner from '../../assets/images/banner2.avif';
+import { Box, Typography, Button, Container, alpha, keyframes } from '@mui/material';
 
-/*const Banner = () => {
+// Animación de flotado con un ligero cambio de escala
+const float = keyframes`
+  0% { transform: translateY(0px) scale(1); }
+  50% { transform: translateY(-20px) scale(1.02); }
+  100% { transform: translateY(0px) scale(1); }
+`;
+
+// Pulso sutil para el brillo del logo
+const glowPulse = keyframes`
+  0% { filter: drop-shadow(0px 0px 15px rgba(255, 64, 129, 0.4)); }
+  50% { filter: drop-shadow(0px 0px 30px rgba(255, 64, 129, 0.7)); }
+  100% { filter: drop-shadow(0px 0px 15px rgba(255, 64, 129, 0.4)); }
+`;
+
+const Hero = () => {
   return (
     <Box
-      component="section"
-      id='home'
+      id="home"
       sx={{
-        height: '100vh',
-        //backgroundImage: `url(${banner})`,
+        position: 'relative',
+        minHeight: '100vh',
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        overflow: 'hidden',
+        bgcolor: '#030000',
+        backgroundImage: `url(/images/banner2.webp)`,
         backgroundSize: 'cover',
         backgroundPosition: 'center',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        color: 'white',
-        textAlign: 'center',
-        flexDirection: 'column',
+        backgroundAttachment: 'fixed', 
+        '&::before': {
+          content: '""',
+          position: 'absolute',
+          inset: 0,
+          background: 'radial-gradient(circle, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0.85) 90%)',
+          zIndex: 1,
+        },
       }}
     >
-      <Typography variant="h2" sx={{ fontWeight: 'bold', mb: 2 }}>
-        ¡Bienvenidos a Nuestro Canal!
-      </Typography>
-      <Typography variant="h5" sx={{ mb: 4 }}>
-        Momentos graciosos y épicas jugadas mientras jugamos juntos.
-      </Typography>
-      <Stack spacing={2} direction="row">
-        <Button variant="contained" color="primary">TikTok</Button>
-        <Button variant="contained" color="secondary">YouTube</Button>
-        <Button variant="contained" color="info">Discord</Button>
-      </Stack>
-    </Box>
-  );
-};
+      <Container maxWidth="md" sx={{ position: 'relative', zIndex: 2, textAlign: 'center' }}>
 
-const Hero = () => {
-  return (
-    <>
-
-      <Banner />
-    </>
-  );
-};
-
-export default Hero;
-
-*/
-
-// Hero.tsx
-/*import React from 'react';
-
-const Hero = () => {
-  return (
-    <section className="bg-gradient-to-b from-black via-gray-900 to-gray-800 text-white min-h-screen flex items-center justify-center px-6">
-      <div className="max-w-4xl text-center">
-        <h1 className="text-4xl md:text-6xl font-bold mb-4">
-          🎮 Jugamos mal, pero nos reímos bien
-        </h1>
-        <p className="text-lg md:text-xl text-gray-300 mb-8">
-          Fails, gritos, jugadas absurdas y pura risa entre panas. Mira nuestros mejores momentos.
-        </p>
-        <div className="flex justify-center gap-4 flex-wrap">
-          <a
-            href="https://www.tiktok.com/@tunombre"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition"
-          >
-            🔥 Ver en TikTok
-          </a>
-          <a
-            href="#videos"
-            className="border border-white hover:bg-white hover:text-black text-white font-bold py-3 px-6 rounded-xl transition"
-          >
-            🎬 Ver clips
-          </a>
-        </div>
-      </div>
-    </section>
-  );
-};
-
-export default Hero;
-*/
-
-// Hero.tsx
-import { Box } from '@mui/material';
-
-const Hero = () => {
-  return (
-    <Box component="div" id='home' className="min-h-screen flex items-center justify-center px-6 py-12" sx={{
-      backgroundImage: `url(/images/banner2.avif)`, height: '100vh',
-      width: '100%', backgroundSize: 'cover', // Escala para cubrir todo el Box
-      backgroundPosition: 'center',
-      backgroundRepeat: 'no-repeat',
-      backgroundColor: 'rgba(0, 0, 0, 0.8)',
-      backgroundBlendMode: 'darken',
-      justifyContent: 'center',
-    }}>
-      <div className="max-w-4xl flex flex-col items-center text-center">
-        <div className="relative z-0">
-          <img
-            src="/images/slogan.png"
+        {/* Logo de False Squad con Animación Dual */}
+        <Box
+          sx={{
+            animation: `${float} 5s ease-in-out infinite, ${glowPulse} 4s ease-in-out infinite`,
+            mb: 5,
+            display: 'flex',
+            justifyContent: 'center'
+          }}
+        >
+          <Box
+            component="img"
+            src="/images/slogan.webp"
             alt="False Squad"
-            className="relative z-20 h-full w-full sm:w-72 md:w-80 lg:w-96 animate-fade-in"
+            sx={{ 
+              width: '100%', 
+              maxWidth: { xs: '320px', md: '550px' }, 
+              height: 'auto',
+              transition: 'transform 0.3s ease',
+              '&:hover': { transform: 'scale(1.05)' }
+            }}
           />
+        </Box>
 
-        </div>
-        <p className="text-xl md:text-2xl text-pink-400 font-semibold mb-6">
-          Bienvenido a <span className="text-cyan-400">False Squad</span> — gaming con sabor a hermandad, gritos y vacilón.
-        </p>
-        <p className="text-lg md:text-xl text-gray-300 mb-8">
-          Fails, risas, jugadas épicas y frases internas que nadie entiende pero todos repiten.
-          10 panas, muchos juegos, y todo <span className="text-pink-500 font-bold">SIN ASCO</span>.
-        </p>
-        <div className="flex justify-center gap-4 flex-wrap">
-          <a
+        {/* Título Principal */}
+        <Typography
+          variant="h4"
+          sx={{
+            fontFamily: 'RussoOne',
+            color: '#f48fb1',
+            mb: 2,
+            letterSpacing: '1px',
+            textShadow: '0px 4px 10px rgba(0,0,0,0.5)',
+            fontSize: { xs: '1.8rem', md: '2.8rem' }
+          }}
+        >
+          Gritadera, clips y <span style={{ color: '#00cec9', textShadow: '0px 0px 15px rgba(0, 206, 201, 0.5)' }}>HERMANDAD</span>.
+        </Typography>
+
+        {/* Descripción */}
+        <Typography
+          variant="body1"
+          sx={{
+            color: 'rgba(255,255,255,0.7)',
+            maxWidth: '650px',
+            mx: 'auto',
+            mb: 6,
+            fontSize: { xs: '1rem', md: '1.25rem' },
+            lineHeight: 1.7,
+            fontStyle: 'italic'
+          }}
+        >
+          Fails épicos y frases que solo nosotros entendemos. <br />
+          10 panas dándolo todo <span style={{ color: '#ff4081', fontWeight: 'bold', textDecoration: 'underline' }}>SIN ASCO</span>.
+        </Typography>
+
+        {/* Botones Gaming */}
+        <Box sx={{ display: 'flex', gap: { xs: 2, md: 3 }, justifyContent: 'center', flexWrap: 'wrap' }}>
+          <Button
             href="https://www.youtube.com/@falsesquadtalks"
             target="_blank"
-            rel="noopener noreferrer"
-            className="bg-pink-500 hover:bg-pink-600 text-white font-bold py-3 px-6 rounded-xl shadow-lg transition"
+            variant="contained"
+            sx={{
+              bgcolor: '#ff4081',
+              color: 'white',
+              px: { xs: 3, md: 5 },
+              py: 1.8,
+              borderRadius: '14px',
+              fontFamily: 'RussoOne',
+              fontSize: '1rem',
+              boxShadow: '0px 8px 20px rgba(255, 64, 129, 0.3)',
+              '&:hover': { 
+                bgcolor: '#c2185b', 
+                transform: 'translateY(-3px)',
+                boxShadow: '0px 12px 25px rgba(255, 64, 129, 0.5)'
+              },
+              transition: 'all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275)'
+            }}
           >
             🔥 Mira los clips
-          </a>
-          <a
+          </Button>
+
+          <Button
             href="https://www.tiktok.com/@false.squad"
             target="_blank"
-            rel="noopener noreferrer"
-            className="border-2 border-cyan-400 hover:bg-cyan-400 hover:text-black text-cyan-400 font-bold py-3 px-6 rounded-xl transition"
+            variant="outlined"
+            sx={{
+              borderColor: '#00cec9',
+              color: '#00cec9',
+              px: { xs: 3, md: 5 },
+              py: 1.8,
+              borderRadius: '14px',
+              fontFamily: 'RussoOne',
+              fontSize: '1rem',
+              borderWidth: '2px',
+              '&:hover': {
+                borderColor: '#00cec9',
+                borderWidth: '2px',
+                bgcolor: alpha('#00cec9', 0.08),
+                transform: 'translateY(-3px)'
+              },
+              transition: 'all 0.3s'
+            }}
           >
-            🎥 TikTok: @false.squad
-          </a>
-        </div>
-      </div>
+            🎥 TikTok
+          </Button>
+        </Box>
+      </Container>
+
+      {/* Decoración: Rayo de luz inferior cian */}
+      <Box sx={{
+        position: 'absolute',
+        bottom: 0,
+        width: '100%',
+        height: '150px',
+        background: 'linear-gradient(to top, rgba(0, 206, 201, 0.15), transparent)',
+        zIndex: 1
+      }} />
     </Box>
   );
 };
