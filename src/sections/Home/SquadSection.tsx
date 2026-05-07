@@ -4,10 +4,10 @@ import { MEMBERS } from '../../const/members';
 import SelectYourMember from '../../components/Members/SelectYourMember';
 import { Image } from '../../components/Image';
 
-const HeroSection: React.FC = () => {
+const SquadSection: React.FC = () => {
 
     return (
-        <section id='members' className="relative flex min-h-screen w-full">
+        <section id='squad' className="relative flex min-h-screen w-full">
             {/* Fondo de la sección */}
             <div
                 className="mask-fade-bottom animate-fade-in absolute inset-0 w-full bg-[url('/images/banner.png')] bg-cover bg-center duration-75"
@@ -27,7 +27,7 @@ const HeroSection: React.FC = () => {
                             alt="False Squad"
                             decoding="async"
                         />
-                        <div className="absolute z-0 size-64 bg-pink-400/80 blur-2xl top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
+                        <div className="absolute z-0 size-64 bg-cyan-400/80 blur-2xl top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
                     </figure>
                 </div>
                 {/* Componente de selección de boxeador */}
@@ -37,4 +37,4 @@ const HeroSection: React.FC = () => {
     );
 };
 
-export default HeroSection;
+export default SquadSection;

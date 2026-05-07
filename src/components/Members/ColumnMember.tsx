@@ -1,8 +1,8 @@
 import MemberCard from './MemberCard'
-import type { Members } from '../../type/members'
+import type { Member } from '../../type/members'
 
 interface Props {
-    member: Members
+    member: Member
     className?: string
 }
 

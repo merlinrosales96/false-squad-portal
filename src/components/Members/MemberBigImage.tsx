@@ -29,7 +29,7 @@ const MemberBigImage: React.FC<Props> = ({ members }) => {
             />
             <Box
               id={`mask-fade-text-${id}`}
-              className="absolute inset-0 -translate-x-full rotate-45 bg-gradient-to-tr from-transparent via-pink-400 to-transparent transition-transform duration-[2s] ease-in-out"
+              className="absolute inset-0 -translate-x-full rotate-45 bg-gradient-to-tr from-transparent via-cyan-400 to-transparent transition-transform duration-[2s] ease-in-out"
             />
           </Box>
         ))}

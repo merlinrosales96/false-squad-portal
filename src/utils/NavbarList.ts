@@ -11,8 +11,8 @@ export const NavButtonsLeft = [
 
 export const NavButtonsRight = [
     {
-        name: "Miembros",
-        id: "members"
+        name: "Squad",
+        id: "squad"
     },
     {
         name: "Videos",

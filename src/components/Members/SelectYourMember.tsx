@@ -1,10 +1,10 @@
 import MemberCard from './MemberCard';
 import MemberBigImage from './MemberBigImage';
 import ColumnMember from './ColumnMember';
-import type { Members } from '../../type/members';
+import type { Member } from '../../type/members';
 
 interface Props {
-  members: Members[];
+  members: Member[];
 }
 
 const SelectYourMember = ({ members }: Props) => {

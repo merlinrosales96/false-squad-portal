@@ -5,6 +5,7 @@ import Home from './pages/Home';
 import Footer from './components/layout/Footer';
 import './App.css';
 import { Box } from '@mui/material';
+import MemberDetail from './sections/Home/MemberDetail';
 import NotFound from './pages/NotFound';
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
         <Box sx={{ flex: 1 }}>
           <Routes>
             <Route path='/' element={<Home />} />
+            <Route path="/squad/:id" element={<MemberDetail />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </Box>

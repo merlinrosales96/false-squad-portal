@@ -1,8 +1,8 @@
-import Hero from "../sections/Home/HeroSection";
-import Videos from "../sections/Home/VideoSection";
-import MemberSection from "../sections/Home/MemberSection";
-import AboutSection from "../sections/Home/AboutSection";
 import { Box } from "@mui/material";
+import Hero from "../sections/Home/HeroSection";
+import AboutSection from "../sections/Home/AboutSection";
+import SquadSection from "../sections/Home/SquadSection";
+import Videos from "../sections/Home/VideoSection";
 
 const Home = () => {
   return (
@@ -22,7 +22,7 @@ const Home = () => {
         <AboutSection />
       </Box>
 
-      <MemberSection />
+      <SquadSection />
 
       {/* La sección de videos suele cerrar muy bien antes del footer */}
       <Videos />
