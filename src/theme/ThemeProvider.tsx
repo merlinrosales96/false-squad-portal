@@ -8,39 +8,29 @@ export const ThemeProviderWrapper = ({ children }: { children: React.ReactNode }
 
   const theme = createTheme({
     typography: {
-      fontFamily: 'RussoOne, Arial',
+      fontFamily: "'RussoOne', Arial, sans-serif",
     },
     palette: {
       mode,
-      ...(mode === 'light'
-        ? {
-          primary: {
-            main: '#1976d2',
+      primary:    { main: '#00ffe7' },
+      secondary:  { main: '#ff2d78' },
+      background: { default: '#060608', paper: '#0e0e12' },
+      text:       { primary: 'rgba(255,255,255,0.92)', secondary: 'rgba(255,255,255,0.45)' },
+    },
+    components: {
+      MuiCssBaseline: {
+        styleOverrides: {
+          body: {
+            backgroundColor: '#060608',
+            color: 'rgba(255,255,255,0.92)',
           },
-          secondary: {
-            main: '#ff4081',
-          },
-          background: {
-            default: '#f3efee',
-            paper: '#ffffff',
-          },
-          text: {
-            primary: '#000000',
-            secondary: '#424242',
-          },
-        }
-        : {
-          primary: {
-            main: '#00cec9', // Un cian más eléctrico
-          },
-          background: {
-            default: '#0a0a0a', // Casi negro, pero con aire
-            paper: '#1a1a1a',   // Un gris oscuro que resalte del fondo
-          },
-          secondary: {
-            main: '#a29bfe', // Un lila suave para contrastar clips o logros
-          },
-        }),
+        },
+      },
+      MuiButton: {
+        styleOverrides: {
+          root: { textTransform: 'none', fontFamily: "'RussoOne', Arial" },
+        },
+      },
     },
   });
 

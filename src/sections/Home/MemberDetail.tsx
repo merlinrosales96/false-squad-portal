@@ -1,188 +1,198 @@
 import React, { useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { Box, Container, Typography, IconButton, Grid, LinearProgress, alpha, keyframes } from '@mui/material';
-import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
+import { Box, Container, Typography, Grid, alpha, keyframes } from '@mui/material';
 import { MEMBERS } from '../../const/members';
 import type { Member } from '../../type/members';
 
 const reveal = keyframes`
-  from { opacity: 0; transform: translateY(20px); filter: blur(10px); }
-  to { opacity: 1; transform: translateY(0); filter: blur(0); }
+  from { opacity: 0; transform: translateY(24px); filter: blur(8px); }
+  to   { opacity: 1; transform: translateY(0);    filter: blur(0); }
 `;
 
+const glow = keyframes`
+  0%   { opacity: 0.5; }
+  50%  { opacity: 1; }
+  100% { opacity: 0.5; }
+`;
+
+const statColors: Record<string, string> = {
+  SKILL:    '#00ffe7',
+  TOXICITY: '#ff2d78',
+  LUCK:     '#b060ff',
+};
+
 const MemberDetail: React.FC = () => {
-    const { id } = useParams<{ id: string }>();
-    const navigate = useNavigate();
-    const member = MEMBERS.find((m) => m.id === id) as Member | undefined;
+  const { id } = useParams<{ id: string }>();
+  const navigate = useNavigate();
+  const member = MEMBERS.find((m) => m.id === id) as Member | undefined;
 
-    useEffect(() => {
-        window.scrollTo(0, 0);
-        if (!member) navigate('/404');
-    }, [member, navigate]);
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    if (!member) navigate('/404');
+  }, [member, navigate]);
 
-    if (!member) return null;
+  if (!member) return null;
 
-    return (
-        <Box
-            sx={{
-                minHeight: '100vh',
-                bgcolor: '#050505',
-                position: 'relative',
-                // 1. Aseguramos que el contenido empiece debajo del Navbar (aprox 64px-80px)
-                pt: { xs: '80px', md: '100px' }
-            }}
-        >
+  const stats = [
+    { label: 'SKILL',    value: member.stats.skill },
+    { label: 'TOXICITY', value: member.stats.toxicity },
+    { label: 'LUCK',     value: member.stats.luck },
+  ];
 
-            {/* BACKGROUND WATERMARK */}
-            <Typography
+  return (
+    <Box
+      sx={{
+        minHeight: '100vh',
+        bgcolor: '#060608',
+        position: 'relative',
+        overflow: 'hidden',
+        pt: { xs: '80px', md: '100px' },
+      }}
+    >
+      {/* Grid lines background */}
+      <Box sx={{
+        position: 'absolute', inset: 0, zIndex: 0, opacity: 0.03,
+        backgroundImage: `
+          linear-gradient(rgba(0,255,231,1) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(0,255,231,1) 1px, transparent 1px)
+        `,
+        backgroundSize: '50px 50px',
+      }} />
+
+      {/* Member ID watermark */}
+      <Typography sx={{
+        position: 'absolute', top: '50%', left: '50%',
+        transform: 'translate(-50%, -50%)',
+        fontSize: { xs: '8rem', md: '18rem' },
+        fontFamily: 'RussoOne',
+        WebkitTextStroke: `2px ${alpha('#00ffe7', 0.04)}`,
+        color: 'transparent',
+        zIndex: 0, pointerEvents: 'none',
+        textTransform: 'uppercase',
+        whiteSpace: 'nowrap',
+      }}>
+        {member.id}
+      </Typography>
+
+      {/* Glow behind member */}
+      <Box sx={{
+        position: 'absolute', top: '20%', left: { xs: '50%', md: '25%' },
+        transform: 'translateX(-50%)',
+        width: '500px', height: '500px',
+        background: 'radial-gradient(circle, rgba(0,255,231,0.08) 0%, transparent 65%)',
+        filter: 'blur(40px)', zIndex: 0, pointerEvents: 'none',
+        animation: `${glow} 5s ease-in-out infinite`,
+      }} />
+
+      <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1, pt: { xs: 3, md: 8 }, pb: 8 }}>
+
+
+        <Grid container spacing={{ xs: 4, md: 10 }} alignItems="flex-end">
+
+          {/* Image */}
+          <Grid size={{ xs: 12, md: 5 }}>
+            <Box sx={{
+              animation: `${reveal} 0.9s ease-out`,
+              height: { xs: '420px', md: '620px' },
+              display: 'flex', alignItems: 'flex-end', justifyContent: 'center',
+              position: 'relative',
+            }}>
+              <Box
+                component="img"
+                src={`/images/members/big/${member.id}.png`}
+                alt={member.name}
                 sx={{
-                    position: 'absolute',
-                    top: '50%',
-                    left: '50%',
-                    transform: 'translate(-50%, -50%)',
-                    fontSize: { xs: '10rem', md: '20rem' },
-                    fontFamily: 'RussoOne',
-                    WebkitTextStroke: `3px ${alpha('#ffffff', 0.03)}`,
-                    color: 'transparent',
-                    zIndex: 0,
-                    pointerEvents: 'none',
-                    textTransform: 'uppercase'
+                  maxHeight: '100%', maxWidth: '100%', width: 'auto',
+                  objectFit: 'contain',
+                  filter: 'drop-shadow(0 20px 40px rgba(0,0,0,0.8)) drop-shadow(0 0 40px rgba(0,255,231,0.1))',
+                  maskImage: 'linear-gradient(to top, transparent 0%, black 12%)',
+                  WebkitMaskImage: 'linear-gradient(to top, transparent 0%, black 12%)',
                 }}
-            >
-                {member.id}
-            </Typography>
+              />
+            </Box>
+          </Grid>
 
-            <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 1, pt: { xs: 4, md: 10 }, pb: 5 }}>
+          {/* Info */}
+          <Grid size={{ xs: 12, md: 7 }}>
+            <Box sx={{ animation: `${reveal} 1.1s ease-out`, textAlign: { xs: 'center', md: 'left' } }}>
 
-                {/* BOTÓN VOLVER: Ahora con margen controlado para que no se pierda */}
-                <Box sx={{ width: '100%', mb: { xs: 2, md: 5 }, mt: { xs: 8, md: 0 } }}>
-                    <IconButton
-                        onClick={() => navigate(-1)}
-                        sx={{
-                            color: 'white',
-                            bgcolor: alpha('#fff', 0.1),
-                            backdropFilter: 'blur(10px)',
-                            '&:hover': { bgcolor: 'primary.main', color: 'black' },
-                            transition: 'all 0.3s'
-                        }}
-                    >
-                        <ArrowBackIosNewIcon fontSize="small" />
-                    </IconButton>
+              {/* Role badge */}
+              <Box sx={{ mb: 2, display: 'flex', justifyContent: { xs: 'center', md: 'flex-start' } }}>
+                <Box component="span" className="section-tag">
+                  {member.role}
                 </Box>
+              </Box>
 
-                <Grid container spacing={{ xs: 2, md: 8 }} alignItems="center">
+              {/* Name */}
+              <Typography variant="h1" sx={{
+                fontFamily: 'RussoOne',
+                fontSize: { xs: '3.5rem', md: '5.5rem' },
+                lineHeight: 0.95, mb: 3,
+                background: 'linear-gradient(135deg, #ffffff 0%, rgba(255,255,255,0.7) 100%)',
+                WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
+              }}>
+                {member.name}
+              </Typography>
 
-                    {/* SECCIÓN IMAGEN: Altura fija para evitar saltos de layout */}
-                    <Grid size={{ xs: 12, md: 5 }}>
-                        <Box
-                            sx={{
-                                position: 'relative',
-                                animation: `${reveal} 1s ease-out`,
-                                height: { xs: '400px', md: '600px' }, // ALTURA FIJA PARA CONSISTENCIA
-                                display: 'flex',
-                                alignItems: 'flex-end',
-                                justifyContent: 'center'
-                            }}
-                        >
-                            <Box
-                                sx={{
-                                    position: 'absolute',
-                                    width: '80%',
-                                    height: '60%',
-                                    background: `radial-gradient(circle, ${alpha('#00cec9', 0.2)} 0%, transparent 70%)`,
-                                    filter: 'blur(60px)',
-                                    zIndex: -1,
-                                    bottom: '10%'
-                                }}
-                            />
+              {/* Game */}
+              <Box sx={{
+                display: 'inline-flex', alignItems: 'center', gap: 1,
+                px: 2.5, py: 1, mb: 4, borderRadius: '8px',
+                bgcolor: 'rgba(255,45,120,0.07)',
+                border: '1px solid rgba(255,45,120,0.2)',
+              }}>
+                <Box sx={{ width: 6, height: 6, borderRadius: '50%', bgcolor: '#ff2d78', boxShadow: '0 0 8px #ff2d78' }} />
+                <Typography sx={{ fontFamily: 'RussoOne', fontSize: '0.8rem', color: '#ff2d78', letterSpacing: 2 }}>
+                  {member.favGame.toUpperCase()}
+                </Typography>
+              </Box>
 
-                            <Box
-                                component="img"
-                                src={`/images/members/big/${member.id}.webp`}
-                                alt={member.name}
-                                sx={{
-                                    maxHeight: '100%', // No permite que la imagen pase del contenedor
-                                    maxWidth: '100%',
-                                    width: 'auto',
-                                    objectFit: 'contain', // Mantiene la proporción sin estirar
-                                    filter: 'drop-shadow(0px 10px 30px rgba(0,0,0,0.5))',
-                                    maskImage: 'linear-gradient(to top, transparent 0%, black 15%)',
-                                    WebkitMaskImage: 'linear-gradient(to top, transparent 0%, black 15%)',
-                                }}
-                            />
-                        </Box>
-                    </Grid>
+              {/* Description */}
+              <Typography sx={{
+                color: 'rgba(255,255,255,0.55)',
+                fontSize: '1.05rem', mb: 6,
+                lineHeight: 1.85,
+                maxWidth: '480px',
+                mx: { xs: 'auto', md: '0' },
+                fontFamily: 'system-ui, sans-serif',
+              }}>
+                {member.description}
+              </Typography>
 
-                    {/* SECCIÓN INFO */}
-                    <Grid size={{ xs: 12, md: 7 }}>
-                        <Box sx={{ animation: `${reveal} 1.2s ease-out`, textAlign: { xs: 'center', md: 'left' } }}>
-                            <Typography variant="overline" sx={{ color: 'primary.main', letterSpacing: 3, fontWeight: 'bold' }}>
-                // {member.role.toUpperCase()}
-                            </Typography>
-
-                            <Typography variant="h1" sx={{
-                                fontFamily: 'RussoOne',
-                                fontSize: { xs: '3rem', md: '5rem' },
-                                color: 'white',
-                                mb: 2,
-                                lineHeight: 1
-                            }}>
-                                {member.name}
-                            </Typography>
-
-                            <Typography variant="body1" sx={{
-                                color: 'rgba(255,255,255,0.6)',
-                                fontSize: '1.1rem',
-                                mb: 5,
-                                lineHeight: 1.8,
-                                maxWidth: '500px',
-                                mx: { xs: 'auto', md: '0' }
-                            }}>
-                                {member.description}
-                            </Typography>
-
-                            {/* STATS BENTO STYLE */}
-                            <Grid container spacing={2}>
-                                {[
-                                    { label: 'SKILL', value: member.stats.skill, color: '#00cec9' },
-                                    { label: 'TOXICITY', value: member.stats.toxicity, color: '#ff4081' },
-                                    { label: 'LUCK', value: member.stats.luck, color: '#a29bfe' }
-                                ].map((stat) => (
-                                    <Grid size={{ xs: 12, sm: 4 }} key={stat.label}>
-                                        <Box sx={{
-                                            bgcolor: alpha('#fff', 0.03),
-                                            p: 2,
-                                            borderRadius: '8px',
-                                            border: '1px solid rgba(255,255,255,0.05)',
-                                            textAlign: 'left'
-                                        }}>
-                                            <Typography variant="caption" sx={{ fontFamily: 'RussoOne', opacity: 0.5, display: 'block', mb: 1 }}>
-                                                {stat.label}
-                                            </Typography>
-                                            <Typography variant="h5" sx={{ fontFamily: 'RussoOne', color: stat.color }}>
-                                                {stat.value}%
-                                            </Typography>
-                                            <LinearProgress
-                                                variant="determinate"
-                                                value={stat.value}
-                                                sx={{
-                                                    height: 3,
-                                                    mt: 1,
-                                                    bgcolor: alpha(stat.color, 0.1),
-                                                    '& .MuiLinearProgress-bar': { bgcolor: stat.color }
-                                                }}
-                                            />
-                                        </Box>
-                                    </Grid>
-                                ))}
-                            </Grid>
-                        </Box>
-                    </Grid>
-
-                </Grid>
-            </Container>
-        </Box>
-    );
+              {/* Stats */}
+              <Box sx={{ display: 'flex', flexDirection: 'column', gap: 2.5, maxWidth: { xs: '100%', md: '420px' }, mx: { xs: 'auto', md: '0' } }}>
+                {stats.map(({ label, value }) => {
+                  const color = statColors[label] || '#00ffe7';
+                  return (
+                    <Box key={label}>
+                      <Box sx={{ display: 'flex', justifyContent: 'space-between', mb: 0.8 }}>
+                        <Typography sx={{ fontFamily: 'RussoOne', fontSize: '0.72rem', letterSpacing: 3, color: 'rgba(255,255,255,0.35)' }}>
+                          {label}
+                        </Typography>
+                        <Typography sx={{ fontFamily: 'RussoOne', fontSize: '0.85rem', color }}>
+                          {value}
+                        </Typography>
+                      </Box>
+                      {/* Track */}
+                      <Box sx={{ height: '3px', borderRadius: '2px', bgcolor: alpha(color, 0.12), position: 'relative', overflow: 'hidden' }}>
+                        <Box sx={{
+                          position: 'absolute', top: 0, left: 0,
+                          height: '100%', width: `${value}%`,
+                          background: `linear-gradient(90deg, ${alpha(color, 0.6)}, ${color})`,
+                          borderRadius: '2px',
+                          boxShadow: `0 0 8px ${color}`,
+                        }} />
+                      </Box>
+                    </Box>
+                  );
+                })}
+              </Box>
+            </Box>
+          </Grid>
+        </Grid>
+      </Container>
+    </Box>
+  );
 };
 
 export default MemberDetail;

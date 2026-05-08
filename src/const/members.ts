@@ -41,14 +41,14 @@ export const MEMBERS: Member[] = [
         stats: { skill: 88, toxicity: 20, luck: 60 },
         favGame: "Rainbow Six Siege"
     },
-    {
+    /*{
         id: "hector",
         name: "Héctor",
         role: "El Tanke del Squad",
         description: "Recibe todas las balas para que los demás brillen. Su sacrificio por el equipo es tan grande como sus gritos en el Discord.",
         stats: { skill: 65, toxicity: 25, luck: 80 },
         favGame: "Overwatch 2"
-    },
+    },*/
     {
         id: "cesita",
         name: "César",
@@ -57,14 +57,14 @@ export const MEMBERS: Member[] = [
         stats: { skill: 75, toxicity: 85, luck: 40 },
         favGame: "GTA V / Party Games"
     },
-    {
+    /*{
         id: "dipa",
         name: "Joyner",
         role: "El Wildcard",
         description: "Nunca sabes qué va a pasar cuando Joyner entra al lobby. Capaz de la jugada del año o del fail que se volverá clip viral.",
         stats: { skill: 80, toxicity: 30, luck: 70 },
         favGame: "Apex Legends"
-    },
+    },*/
     {
         id: "potoco",
         name: "Luis Garcés",
@@ -73,12 +73,12 @@ export const MEMBERS: Member[] = [
         stats: { skill: 82, toxicity: 12, luck: 55 },
         favGame: "Call of Duty"
     },
-    {
+    /*{
         id: "jose",
         name: "José",
         role: "El Agente del Caos",
         description: "Su única misión es que nadie se aburra. Experto en meterse en problemas y hacer que todo el squad tenga que ir al rescate.",
         stats: { skill: 68, toxicity: 50, luck: 75 },
         favGame: "Rust / Survival Games"
-    }
+    }*/
 ];

@@ -6,152 +6,107 @@
   src: url('./assets/fonts/RussoOne-Regular.ttf') format('truetype');
 }
 
-.absolute {
-  position: absolute;
-}
-
-.relative {
-  position: relative;
-}
-
-.z-0 {
-  z-index: 0;
-}
-
-.z-10 {
-  z-index: 10;
-}
-
-.top-0 {
-  top: 0;
-}
-
-.left-0 {
-  left: 0;
-}
-
+/* ── VARIABLES ────────────────────────────────────────────── */
 :root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
+  --neon-cyan:    #00ffe7;
+  --neon-magenta: #ff2d78;
+  --neon-purple:  #b060ff;
+  --dark-bg:      #060608;
+  --dark-surface: #0e0e12;
+  --dark-card:    #14141a;
+  --text-primary: rgba(255,255,255,0.92);
+  --text-muted:   rgba(255,255,255,0.45);
+
+  font-family: 'RussoOne', system-ui, sans-serif;
   line-height: 1.5;
   font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
+  color-scheme: dark;
+  color: var(--text-primary);
+  background-color: var(--dark-bg);
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-
-a:hover {
-  color: #535bf2;
-}
+* { box-sizing: border-box; }
 
 body {
   margin: 0;
-  display: flex;
-  place-items: center;
   min-width: 320px;
   min-height: 100vh;
+  background-color: var(--dark-bg);
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
-}
-
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
+a {
   font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
+  color: var(--neon-cyan);
+  text-decoration: inherit;
+  transition: color 0.2s;
 }
+a:hover { color: var(--neon-magenta); }
 
-/*::-webkit-scrollbar {
-  width: 12px;
-}
-
-::-webkit-scrollbar-track {
-  background: rgb(225, 233, 255);
-}
-
+::-webkit-scrollbar { width: 5px; }
+::-webkit-scrollbar-track { background: var(--dark-bg); }
 ::-webkit-scrollbar-thumb {
-  background-color: rgb(187, 63, 187);
-  border-radius: 20px;
-  border: 3px solid rgb(225, 233, 255);
-}*/
-
-button:hover {
-  border-color: #646cff;
+  background: linear-gradient(var(--neon-cyan), var(--neon-magenta));
+  border-radius: 10px;
 }
 
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+.neon-text-cyan {
+  color: var(--neon-cyan);
+  text-shadow: 0 0 10px rgba(0,255,231,0.8), 0 0 30px rgba(0,255,231,0.4);
+}
+.neon-text-magenta {
+  color: var(--neon-magenta);
+  text-shadow: 0 0 10px rgba(255,45,120,0.8), 0 0 30px rgba(255,45,120,0.4);
 }
 
-.gradient {
-  img {
-    mask-image: linear-gradient(black 95%, transparent);
-  }
+.section-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 16px;
+  border-radius: 4px;
+  background: linear-gradient(90deg, rgba(0,255,231,0.12), transparent);
+  border-left: 3px solid var(--neon-cyan);
+  font-size: 0.72rem;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--neon-cyan);
+  font-family: 'RussoOne';
+  margin-bottom: 16px;
 }
 
-.slick-slide > div {
-  display: flex;
-  justify-content: center;
-}
-
+.gradient img { mask-image: linear-gradient(black 95%, transparent); }
+.slick-slide > div { display: flex; justify-content: center; }
 .mask-fade-text {
   mask-image: linear-gradient(to bottom, transparent 5%, black 6%, black 95%, transparent 100%);
 }
 
 @keyframes fighter-select {
-  from {
-    opacity: 0.5;
-    border-color: rgba(255, 20, 147, 1);
-  }
-  to {
-    opacity: 1;
-    border-color: rgba(255, 20, 147, 0.5);
-  }
+  from { opacity: 0.5; border-color: var(--neon-cyan); }
+  to   { opacity: 1;   border-color: rgba(0,255,231,0.5); }
 }
 
 @layer utilities {
   .mask-bottom-fade {
     mask-image: linear-gradient(to bottom, black 95%, transparent);
     -webkit-mask-image: linear-gradient(to bottom, black 95%, transparent);
-    mask-repeat: no-repeat;
-    -webkit-mask-repeat: no-repeat;
-    mask-size: 100% 100%;
-    -webkit-mask-size: 100% 100%;
   }
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-
-  a:hover {
-    color: #747bff;
-  }
-
-  button {
-    background-color: #f9f9f9;
-  }
+@keyframes gradientShift {
+  0%   { background-position: 0% 50%; }
+  50%  { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
 }
 
+html { scroll-behavior: smooth; }
+
+.absolute { position: absolute; }
+.relative { position: relative; }
+.z-0  { z-index: 0; }
+.z-10 { z-index: 10; }
+.top-0 { top: 0; }
+.left-0 { left: 0; }

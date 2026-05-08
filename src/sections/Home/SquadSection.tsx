@@ -1,36 +1,95 @@
-// HeroSection.tsx
 import React from 'react';
 import { MEMBERS } from '../../const/members';
 import SelectYourMember from '../../components/Members/SelectYourMember';
-import { Image } from '../../components/Image';
 
 const SquadSection: React.FC = () => {
-
     return (
-        <section id='squad' className="relative flex min-h-screen w-full">
-            {/* Fondo de la sección */}
+        <section
+            id='squad'
+            className="relative flex min-h-screen w-full overflow-hidden"
+            style={{ backgroundColor: '#060608' }}
+        >
+            {/* Banner de fondo — muy tenue para no pisar el estilo */}
             <div
-                className="mask-fade-bottom animate-fade-in absolute inset-0 w-full bg-[url('/images/banner.png')] bg-cover bg-center duration-75"
-            ></div>
-            {/* Capa de superposición */}
-            <div className="mask-fade-bottom absolute inset-0 w-full bg-black opacity-10"></div>
+                className="mask-fade-bottom animate-fade-in absolute inset-0 w-full bg-cover bg-center duration-75"
+                style={{
+                    backgroundImage: "url('/images/banner.png')",
+                    opacity: 0.07,
+                }}
+            />
+
+            {/* Grid lines — igual que las otras secciones */}
+            <div
+                className="absolute inset-0 pointer-events-none"
+                style={{
+                    opacity: 0.035,
+                    backgroundImage: `
+                        linear-gradient(rgba(0,255,231,0.8) 1px, transparent 1px),
+                        linear-gradient(90deg, rgba(0,255,231,0.8) 1px, transparent 1px)
+                    `,
+                    backgroundSize: '60px 60px',
+                }}
+            />
+
+            {/* Dot grid sutil */}
+            <div
+                className="absolute inset-0 pointer-events-none"
+                style={{
+                    opacity: 0.03,
+                    backgroundImage: 'radial-gradient(rgba(0,255,231,0.8) 1px, transparent 1px)',
+                    backgroundSize: '30px 30px',
+                }}
+            />
+
+            {/* Glow cyan izquierda */}
+            <div className="absolute pointer-events-none" style={{
+                top: '10%', left: '-8%',
+                width: '500px', height: '500px', borderRadius: '50%',
+                background: 'radial-gradient(circle, rgba(0,255,231,0.07) 0%, transparent 70%)',
+            }} />
+
+            {/* Glow magenta derecha */}
+            <div className="absolute pointer-events-none" style={{
+                top: '20%', right: '-8%',
+                width: '500px', height: '500px', borderRadius: '50%',
+                background: 'radial-gradient(circle, rgba(255,45,120,0.06) 0%, transparent 70%)',
+            }} />
 
             {/* Contenido principal */}
             <div className="relative flex w-full flex-col items-center p-8 text-center">
-                <div id="landing" className="absolute top-0 flex w-full flex-col items-center py-16">
-                    <Image image="/images/sections/squad.webp" alt="" className="overflow-hidden rounded-xl object-cover object-center px-6" />
-                    <figure className="animate-fade-in relative">
-                        <img
-                            className="relative z-20 h-fit w-64 sm:w-72 md:w-80 lg:w-96"
-                            src="/images/logo.webp"
-                            fetchPriority="high"
-                            alt="False Squad"
-                            decoding="async"
-                        />
-                        <div className="absolute z-0 size-64 bg-cyan-400/80 blur-2xl top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2"></div>
-                    </figure>
+
+                {/* Landing state: título + logo */}
+                <div id="landing" className="absolute top-0 flex w-full flex-col items-center justify-center" style={{ paddingTop: '15vh' }}>
+
+                    <div style={{
+                        display: 'inline-flex', alignItems: 'center', gap: '8px',
+                        padding: '6px 16px', borderRadius: '4px', marginBottom: '24px',
+                        background: 'linear-gradient(90deg, rgba(0,255,231,0.12), transparent)',
+                        borderLeft: '3px solid #00ffe7',
+                        fontSize: '0.72rem', letterSpacing: '3px', textTransform: 'uppercase',
+                        color: '#00ffe7', fontFamily: 'RussoOne',
+                    }}>
+                        El Squad
+                    </div>
+
+                    <h2 style={{
+                        fontFamily: 'RussoOne',
+                        fontSize: 'clamp(2.5rem, 8vw, 5.5rem)',
+                        lineHeight: 1, margin: '0 0 16px 0',
+                        color: 'rgba(255,255,255,0.92)',
+                        letterSpacing: '-1px',
+                    }}>
+                        CONOCE EL{' '}
+                        <span style={{
+                            color: '#00ffe7',
+                            textShadow: '0 0 20px rgba(0,255,231,0.6), 0 0 50px rgba(0,255,231,0.3)',
+                        }}>
+                            SQUAD
+                        </span>
+                    </h2>
                 </div>
-                {/* Componente de selección de boxeador */}
+
+                {/* Selector de miembros */}
                 <SelectYourMember members={MEMBERS} />
             </div>
         </section>
