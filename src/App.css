@@ -13,7 +13,6 @@ html, body, #root {
   text-align: center;
 }
 
-
 .logo {
   height: 6em;
   padding: 1.5em;
@@ -48,4 +47,13 @@ html, body, #root {
 
 .read-the-docs {
   color: #888;
+}
+
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
 }

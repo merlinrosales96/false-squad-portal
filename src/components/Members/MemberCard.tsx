@@ -1,114 +1,148 @@
-import React, { useRef } from 'react';
-import { Card, CardMedia, CardContent, Typography } from '@mui/material';
+import React, { useEffect, useState } from 'react';
+import { Card, CardMedia, CardContent, Typography, Box } from '@mui/material';
+import { $ } from '../../lib/dom-selector';
 
 interface Props {
   id: string;
   name: string;
   extraClass?: string;
-  setImage: React.Dispatch<React.SetStateAction<string>>;
-  setName: React.Dispatch<React.SetStateAction<string>>;
-  setShow: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
-const MemberCard: React.FC<Props> = ({ id, name, extraClass = '', setShow, setImage, setName }) => {
-  const timeoutRef = useRef<{ enter: number | null; leave: number | null }>({ enter: null, leave: null });
+let globalActiveFighterId: string | null = null;
+let globalHideFighterTimer: ReturnType<typeof setTimeout> | null = null;
 
-/*const handlePointerEnter = () => {
-  // Cancelamos cualquier timeout pendiente para leave o enter
-  if (timeoutRef.current.leave) {
-    clearTimeout(timeoutRef.current.leave);
-    timeoutRef.current.leave = null;
-  }
-  if (timeoutRef.current.enter) {
-    clearTimeout(timeoutRef.current.enter);
-    timeoutRef.current.enter = null;
-  }
+const MemberCard: React.FC<Props> = ({ id, name, extraClass }: Props) => {
+  const [isActivated, setIsActivated] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
-  const image = `/images/members/big/${id}.png`;
+  const cyan = '#00ffe7';
+  const magenta = '#ff2d78';
 
-  setAnimation('slideUp');
+  useEffect(() => {
+    const handleGlobalClick = (e: MouseEvent) => {
+      if (!isMobile) return;
+      const target = e.target as HTMLElement;
+      if (!target.closest('.member-card') && globalActiveFighterId !== null) {
+        handlePointerLeaveLogic();
+      }
+    };
+    document.addEventListener('click', handleGlobalClick);
+    return () => document.removeEventListener('click', handleGlobalClick);
+  }, [isMobile]);
 
-  timeoutRef.current.enter = window.setTimeout(() => {
-    setImage(image);
-    setAnimation('none');
-    timeoutRef.current.enter = null;
-  }, 300);
-};
+  useEffect(() => {
+    const interval = setInterval(() => {
+      if (globalActiveFighterId !== id && isActivated) setIsActivated(false);
+    }, 150);
+    return () => clearInterval(interval);
+  }, [isActivated, id]);
 
-const handlePointerLeave = () => {
-  // Cancelamos cualquier timeout pendiente para enter o leave
-  if (timeoutRef.current.enter) {
-    clearTimeout(timeoutRef.current.enter);
-    timeoutRef.current.enter = null;
-  }
-  if (timeoutRef.current.leave) {
-    clearTimeout(timeoutRef.current.leave);
-    timeoutRef.current.leave = null;
-  }
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth <= 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
-  if (displayImage === defaultImage) return; // si está seleccionado no hacemos fadeOut
-
-  timeoutRef.current.leave = window.setTimeout(() => {
-    setAnimation('fadeOut');
-    timeoutRef.current.leave = window.setTimeout(() => {
-      setImage(defaultImage);
-      setAnimation('none');
-      timeoutRef.current.leave = null;
-    }, 500);
-  }, 1000);
-};
-*/
-
-  const handlePointerEnter = () => {
-    setShow(true);
-    setImage(`/images/members/big/${id}.png`);
-    setName(`/images/members/text/${id}.png`);
+  const handlePointerEnterLogic = (targetId: string) => {
+    if (globalActiveFighterId && globalActiveFighterId !== targetId) {
+      $(`[data-id="hero-text-${globalActiveFighterId}"]`)?.classList.add('hidden');
+      $(`[data-id="hero-image-${globalActiveFighterId}"]`)?.classList.add('hidden');
+      $(`#mask-fade-text-${globalActiveFighterId}`)?.classList.replace('translate-x-full', '-translate-x-full');
+    }
+    if (globalHideFighterTimer) { clearTimeout(globalHideFighterTimer); globalHideFighterTimer = null; }
+    $('#landing')?.classList.add('hidden');
+    const heroText = $(`[data-id="hero-text-${targetId}"]`);
+    const heroImage = $(`[data-id="hero-image-${targetId}"]`);
+    const heroMask = $(`#mask-fade-text-${targetId}`);
+    heroText?.classList.remove('hidden', 'animate-zoom-out');
+    heroImage?.classList.remove('hidden', 'animate-fade-out-down');
+    heroText?.classList.add('animate-zoom-in');
+    heroImage?.classList.add('animate-slide-up-fade');
+    heroMask?.classList.replace('-translate-x-full', 'translate-x-full');
+    globalActiveFighterId = targetId;
   };
 
-  const handlePointerLeave = () => {
-    setShow(false);
-    setImage(`/images/logo.png`);
-    setName('');
+  const handlePointerLeaveLogic = () => {
+    if (!globalActiveFighterId) return;
+    const text = $(`[data-id="hero-text-${globalActiveFighterId}"]`);
+    const img = $(`[data-id="hero-image-${globalActiveFighterId}"]`);
+    const mask = $(`#mask-fade-text-${globalActiveFighterId}`);
+    text?.classList.remove('animate-zoom-in'); text?.classList.add('animate-zoom-out');
+    img?.classList.remove('animate-slide-up-fade'); img?.classList.add('animate-fade-out-down');
+    mask?.classList.replace('translate-x-full', '-translate-x-full');
+    globalHideFighterTimer = setTimeout(() => {
+      text?.classList.add('hidden'); img?.classList.add('hidden');
+      if (globalActiveFighterId === id || globalActiveFighterId === null) {
+        $('#landing')?.classList.remove('hidden');
+        globalActiveFighterId = null;
+      }
+      setIsActivated(false);
+    }, 900);
+  };
+
+  const handleAction = (e: React.MouseEvent) => {
+    if (isMobile) {
+      if (globalActiveFighterId !== id) {
+        e.preventDefault(); e.stopPropagation();
+        setIsActivated(true); handlePointerEnterLogic(id);
+      } else {
+        window.location.href = `/squad/${id}`;
+      }
+    } else {
+      window.location.href = `/squad/${id}`;
+    }
   };
 
   return (
-    <a
-      className={`member-card ${extraClass} inline-block transition-all w-24 sm:w-24 md:w-16 lg:w-20 xl:w-24 2xl:w-26 group relative rounded-lg duration-300 hover:scale-110 hover:shadow-lg hover:z-20 focus-visible:scale-110 focus-visible:shadow-lg focus-visible:z-20 focus:outline-none focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-theme-tickle-me-pink`}
-      aria-label={`Ver perfil del miembro ${name}`}
-      href={`/miembro/${id}`}
+    <Box
+      onClick={handleAction}
+      className={`member-card ${extraClass} inline-block transition-all w-24 sm:w-24 md:w-16 lg:w-20 xl:w-24 2xl:w-26 group relative rounded-lg duration-300 hover:scale-110 cursor-pointer`}
       data-id={id}
     >
       <Card
-        key={id}
         className="relative rounded-lg"
-        onMouseEnter={() => handlePointerEnter()}
-        onMouseLeave={() => handlePointerLeave()}>
+        sx={{
+          bgcolor: 'transparent', boxShadow: 'none', overflow: 'hidden',
+          border: isActivated && isMobile ? `1.5px solid ${cyan}` : 'none',
+          transition: 'border 0.2s ease',
+        }}
+        onMouseEnter={() => !isMobile && handlePointerEnterLogic(id)}
+        onMouseLeave={() => !isMobile && handlePointerLeaveLogic()}
+      >
         <CardMedia
           component="img"
-          className="aspect-[900/1200] h-full w-full bg-gradient-to-t from-gray-50/40 via-gray-50/20 to-transparent object-cover transition-transform duration-500 group-hover:scale-110"
-          image={`/images/members/big/${id}.png`}
-          alt={`Tarjeta del miembro ${name}`}
+          className="aspect-[900/1200] h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
+          image={`/images/members/cards/${id}.webp`}
+          alt={name}
           loading="lazy"
         />
 
-        <div className="absolute inset-0 -translate-x-full bg-gradient-to-tr from-transparent via-white/20 to-transparent transition-transform duration-700 ease-in-out group-hover:translate-x-full pointer-events-none"></div>
+        {/* Shimmer on hover */}
+        <div className="absolute inset-0 -translate-x-full bg-gradient-to-tr from-transparent via-white/15 to-transparent transition-transform duration-700 ease-in-out group-hover:translate-x-full pointer-events-none" />
 
-        <div className="border-theme-tickle-me-pink/70 absolute inset-0 rounded-lg border-0 opacity-0 transition-all duration-300 group-hover:border-2 group-hover:opacity-100 pointer-events-none"></div>
+        {/* Cyan border glow on hover */}
+        <div
+          className="absolute inset-0 rounded-lg border-0 opacity-0 transition-all duration-300 group-hover:border-2 group-hover:opacity-100 pointer-events-none"
+          style={{ borderColor: `${cyan}99` }}
+        />
+
+        {/* Bottom magenta glow */}
+        <div className="absolute bottom-0 left-0 right-0 h-1/3 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none"
+          style={{ background: `linear-gradient(to top, ${magenta}20, transparent)` }} />
       </Card>
 
-      <div className="absolute inset-0 flex translate-y-2 flex-col items-center justify-end rounded-lg bg-gradient-to-t from-pink-950/90 via-pink-950/40 to-transparent p-2 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 pointer-events-none">
-        <CardContent>
+      {/* Name tag */}
+      <div className="absolute inset-0 flex translate-y-2 flex-col items-center justify-end rounded-lg bg-gradient-to-t from-black/95 via-black/50 to-transparent p-2 opacity-0 transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 pointer-events-none">
+        <CardContent sx={{ p: '4px !important' }}>
           <Typography
             variant="subtitle2"
-            className="text-theme-tickle-me-pink text-xs font-semibold tracking-wide drop-shadow-[0_1px_2px_rgba(0,0,0,0.8)]"
+            sx={{ color: cyan, fontFamily: 'RussoOne', fontSize: '0.7rem', letterSpacing: 1 }}
           >
             {name}
           </Typography>
         </CardContent>
       </div>
-
-      <div className="bg-theme-tickle-me-pink absolute -bottom-1 left-1/2 h-1 w-0 -translate-x-1/2 transform rounded-t-md transition-all duration-300 group-hover:w-2/3 pointer-events-none"></div>
-    </a >
+    </Box>
   );
 };
 

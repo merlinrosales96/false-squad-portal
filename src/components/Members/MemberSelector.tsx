@@ -4,16 +4,13 @@ import MemberCard from './MemberCard';
 interface FighterCardProps {
   id: string;
   name: string;
-  setImage: React.Dispatch<React.SetStateAction<string>>;
-  setShow: React.Dispatch<React.SetStateAction<boolean>>;
-  setName: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const MemberSelector: React.FC<FighterCardProps> = ({ id, name, setImage, setShow, setName }) => {
+const MemberSelector: React.FC<FighterCardProps> = ({ id, name }) => {
   return (
     <div className="relative">
       {/* Boxer Card */}
-      <MemberCard id={id} name={name} setImage={setImage} setShow={setShow} setName={setName} />
+      <MemberCard id={id} name={name} />
 
       {/* Fighter Info */}
       <div

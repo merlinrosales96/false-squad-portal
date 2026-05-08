@@ -1,19 +1,35 @@
 import { ThemeProviderWrapper } from './theme/ThemeProvider';
 import { Routes, Route } from 'react-router-dom';
-import Navbar from './components/layout/NavBar';
+import Navbar from './components/layout/Navbar2';
 import Home from './pages/Home';
 import Footer from './components/layout/Footer';
 import './App.css';
+import { Box } from '@mui/material';
+import MemberDetail from './sections/Home/MemberDetail';
+import NotFound from './pages/NotFound';
 
 function App() {
 
   return (
     <ThemeProviderWrapper>
-      <Navbar />
-      <Routes>
-        <Route path='/' element={<Home />} />
-      </Routes>
-      <Footer />
+
+      <Box
+        sx={{
+          display: "flex",
+          flexDirection: "column",
+          minHeight: "100vh",
+        }}
+      >
+        <Navbar />
+        <Box sx={{ flex: 1 }}>
+          <Routes>
+            <Route path='/' element={<Home />} />
+            <Route path="/squad/:id" element={<MemberDetail />} />
+            <Route path="*" element={<NotFound />} />
+          </Routes>
+        </Box>
+        <Footer />
+      </Box>
     </ThemeProviderWrapper>
   )
 }

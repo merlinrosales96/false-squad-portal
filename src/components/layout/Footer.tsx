@@ -1,120 +1,112 @@
-/*import { Box, Container, Grid, IconButton, Typography } from "@mui/material"
-import { Instagram, YouTube, Email } from "@mui/icons-material"
-import { FaTiktok, FaDiscord } from "react-icons/fa"
-
-
-export default function Footer() {
-
-    return (
-        <Box
-            component="footer"
-            sx={{
-                py: 3,
-                px: 2,
-                mt: 'auto',
-                backgroundColor: (theme) =>
-                    theme.palette.mode === 'light'
-                        ? theme.palette.grey[500]
-                        : theme.palette.grey[900],
-            }}
-        >
-            <Container component="div" sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', gap: 3 }}>
-                <Grid container spacing={3} alignItems="flex-start">
-                    <Grid alignItems="center" alignContent="center" size={{ xs: 12, md: 3 }}>
-                        <Typography variant="h6" gutterBottom>
-                            Merlín Rosales
-                        </Typography>
-                        <Typography variant="body1" gutterBottom>
-                            {(`footer:Description`)}
-                        </Typography>
-                    </Grid>
-                    <Grid alignItems="center" alignContent="center" size={{ xs: 12, md: 3 }}>
-                        <Typography variant="h6" gutterBottom>
-                            {('experience:Education')}
-                        </Typography>
-                        <Typography variant="body2" color="text.secondary" gutterBottom>
-                            {`La Universidad del Zulia | ${('experience:DegreeYear')}`}
-                        </Typography>
-
-                        <Typography variant="body1" color="text.primary" gutterBottom>
-                            {('experience:Degree')}
-                        </Typography>
-                    </Grid>
-                    <Grid alignItems="center" alignContent="center" size={{ xs: 12, md: 3 }}>
-                        <Typography variant="h6" gutterBottom className="text-lg font-semibold">{('footer:SocialNetwork')}</Typography>
-                        <div className="flex items-center space-x-4">
-                            <IconButton href="" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary" color="inherit">
-                                <FaTiktok />
-                            </IconButton>
-                            <IconButton href="" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary" color="primary">
-                                <FaDiscord />
-                            </IconButton>
-                            <IconButton href="" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary" color="primary">
-                                <Instagram />
-                            </IconButton>
-                            <IconButton href="" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary" color="primary">
-                                <YouTube />
-                            </IconButton>
-                        </div>
-                    </Grid>
-                    <Grid alignItems="center" alignContent="center" size={{ xs: 12, md: 3 }}>
-                        <Typography variant="h6" gutterBottom className="text-lg font-semibold">{('footer:Contact')}</Typography>
-                        <div className="flex items-center space-x-4">
-                            <IconButton href={`mailto:${(`emailButton:Email`)}?subject=${encodeURIComponent((`emailButton:Subject`))}&body=${encodeURIComponent((`emailButton:Message`))}`} target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary" color="primary">
-                                <Email />
-                            </IconButton>
-                        </div>
-                    </Grid>
-                </Grid>
-                <Typography variant="subtitle1" className="text-center">{('footer:Copyright')}</Typography>
-            </Container>
-        </Box>
-    )
-}*/
-
-import { Box, IconButton, Typography } from "@mui/material"
-import { Instagram, YouTube } from "@mui/icons-material"
+import { Box, IconButton, Typography, Container, keyframes } from "@mui/material";
+import { Instagram, YouTube } from "@mui/icons-material";
 import { FaTiktok } from "react-icons/fa";
 
+const flicker = keyframes`
+  0%, 94%, 100% { opacity: 1; }
+  95% { opacity: 0.4; }
+  97% { opacity: 0.7; }
+`;
 
 export default function Footer() {
+  const year = new Date().getFullYear();
 
-    const year = new Date().getFullYear();
+  return (
+    <Box component="footer" sx={{ py: 7, bgcolor: '#04040a', borderTop: '1px solid rgba(0,255,231,0.06)', position: 'relative', overflow: 'hidden' }}>
+      {/* Grid bg */}
+      <Box className="grid-bg" sx={{ position: 'absolute', inset: 0, opacity: 0.5 }} />
 
-    return (
-        <Box
-            component="footer"
-            sx={{
-                py: 3,
-                px: 2,
-                mt: 'auto',
-                backgroundColor: (theme) =>
-                    theme.palette.mode === 'light'
-                        ? theme.palette.grey[500]
-                        : "rgba(180,5,178,0.2)",
-            }}
-        >
-            <div className="container mx-auto max-w-5xl px-4 md:px-6">
-                <div className="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-                    <div className="space-y-2">
-                        <Typography variant="h6" gutterBottom className="text-lg font-semibold">
-                            Redes Sociales
-                        </Typography>
-                        <div className="flex items-center space-x-4">
-                            <IconButton href="https://www.tiktok.com/@false.squad" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-transform duration-300 ease-in-out transform hover:scale-110" color="primary">
-                                <FaTiktok />
-                            </IconButton>
-                            <IconButton href="https://www.instagram.com/false.squad/" target="_blank" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-transform duration-300 ease-in-out transform hover:scale-110" color="inherit">
-                                <Instagram />
-                            </IconButton>
-                            <IconButton href="https://www.youtube.com/@falsesquadtalks" target="_blank" color="error" rel="noopener noreferrer" className="text-muted-foreground hover:text-primary transition-transform duration-300 ease-in-out transform hover:scale-110">
-                                <YouTube />
-                            </IconButton>
-                        </div>
-                    </div>
-                </div>
-                <Typography variant="subtitle1" className="text-center">{`© ${year} False Squad. Todos los derechos reservados.`}</Typography>
-            </div>
+      {/* Top accent line */}
+      <Box sx={{ position: 'absolute', top: 0, left: '25%', right: '25%', height: '1px', background: 'linear-gradient(90deg, transparent, #00ffe7, #ff2d78, transparent)', opacity: 0.4 }} />
+
+      {/* Watermark */}
+      <Typography sx={{
+        position: 'absolute', bottom: -30, left: '50%', transform: 'translateX(-50%)',
+        fontFamily: 'RussoOne', fontSize: '9rem', fontWeight: 900,
+        color: 'transparent', WebkitTextStroke: '1px rgba(255,255,255,0.018)',
+        whiteSpace: 'nowrap', pointerEvents: 'none', userSelect: 'none', lineHeight: 1,
+      }}>
+        FALSE SQUAD
+      </Typography>
+
+      <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 2 }}>
+        <Box sx={{
+          display: 'flex', flexDirection: { xs: 'column', md: 'row' },
+          alignItems: { xs: 'center', md: 'flex-start' },
+          justifyContent: 'space-between', gap: 5,
+          pb: 5, mb: 4, borderBottom: '1px solid rgba(255,255,255,0.04)',
+        }}>
+
+          {/* Brand */}
+          <Box sx={{ textAlign: { xs: 'center', md: 'left' } }}>
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, justifyContent: { xs: 'center', md: 'flex-start' }, mb: 1.5 }}>
+              <Box sx={{ width: 6, height: 6, borderRadius: '50%', bgcolor: '#00ffe7', boxShadow: '0 0 8px #00ffe7', animation: `${flicker} 5s infinite` }} />
+              <Typography sx={{ fontFamily: 'RussoOne', letterSpacing: 4, fontSize: '1.1rem', background: 'linear-gradient(90deg, #00ffe7, #ff2d78)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
+                FALSE SQUAD
+              </Typography>
+            </Box>
+            <Typography sx={{ color: 'rgba(255,255,255,0.25)', fontSize: '0.85rem', lineHeight: 1.9, fontFamily: 'system-ui' }}>
+              Clips, juegos y buen ambiente.<br />
+              Más que un grupo, una familia.
+            </Typography>
+          </Box>
+
+          {/* Social */}
+          <Box sx={{ textAlign: 'center' }}>
+            <Typography sx={{ fontFamily: 'RussoOne', fontSize: '0.6rem', letterSpacing: 4, color: 'rgba(255,255,255,0.2)', mb: 2 }}>
+              // REDES
+            </Typography>
+            <Box sx={{ display: 'flex', gap: 1.5 }}>
+              {[
+                { href: 'https://www.tiktok.com/@false.squad', color: '#ff0050', icon: <FaTiktok size={17} /> },
+                { href: 'https://www.instagram.com/false.squad/', color: '#e1306c', icon: <Instagram fontSize="small" /> },
+                { href: 'https://www.youtube.com/@falsesquadtalks', color: '#ff0000', icon: <YouTube fontSize="small" /> },
+              ].map((s) => (
+                <IconButton key={s.href} href={s.href} target="_blank" sx={{
+                  color: 'rgba(255,255,255,0.3)', width: 42, height: 42,
+                  border: '1px solid rgba(255,255,255,0.07)', borderRadius: '4px',
+                  transition: 'all 0.3s ease',
+                  '&:hover': {
+                    color: s.color,
+                    borderColor: `${s.color}50`,
+                    bgcolor: `${s.color}12`,
+                    transform: 'translateY(-3px)',
+                    boxShadow: `0 8px 20px ${s.color}30`,
+                  },
+                }}>
+                  {s.icon}
+                </IconButton>
+              ))}
+            </Box>
+          </Box>
+
+          {/* Status */}
+          <Box sx={{ textAlign: { xs: 'center', md: 'right' } }}>
+            <Typography sx={{ fontFamily: 'RussoOne', fontSize: '0.6rem', letterSpacing: 4, color: 'rgba(255,255,255,0.2)', mb: 1.5 }}>
+              // ESTADO
+            </Typography>
+            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.8 }}>
+              {[
+                { label: 'SQUAD', status: 'ONLINE', color: '#00ffe7', duration: 5 },
+                { label: 'CAOS', status: 'ACTIVO', color: '#ff2d78', duration: 4 },
+                { label: 'ASCO', status: 'NINGUNO', color: '#9b5de5', duration: 6 },
+              ].map((row) => (
+                <Box key={row.label} sx={{ display: 'flex', gap: 2, alignItems: 'center', justifyContent: { xs: 'center', md: 'flex-end' } }}>
+                  <Typography sx={{ fontFamily: 'RussoOne', fontSize: '0.6rem', letterSpacing: 2, color: 'rgba(255,255,255,0.2)' }}>{row.label}</Typography>
+                  <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.8 }}>
+                    <Box sx={{ width: 4, height: 4, borderRadius: '50%', bgcolor: row.color, boxShadow: `0 0 5px ${row.color}`, animation: `${flicker} ${row.duration}s infinite` }} />
+                    <Typography sx={{ fontFamily: 'RussoOne', fontSize: '0.6rem', letterSpacing: 2, color: row.color }}>{row.status}</Typography>
+                  </Box>
+                </Box>
+              ))}
+            </Box>
+          </Box>
         </Box>
-    )
+
+        <Typography sx={{ textAlign: 'center', fontFamily: 'RussoOne', fontSize: '0.6rem', letterSpacing: 3, color: 'rgba(255,255,255,0.12)' }}>
+          © {year} FALSE SQUAD // TODOS LOS DERECHOS RESERVADOS // VEN 🇻🇪
+        </Typography>
+      </Container>
+    </Box>
+  );
 }
