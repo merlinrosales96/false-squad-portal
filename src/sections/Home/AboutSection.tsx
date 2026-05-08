@@ -40,12 +40,12 @@ export default function AboutSection() {
             <Box sx={{ position: 'relative' }}>
               {/* HUD frame corners */}
               {[
-                { top: -8, left: -8, borderTop: '2px solid #00ffe7', borderLeft: '2px solid #00ffe7' },
-                { top: -8, right: -8, borderTop: '2px solid rgba(0,255,231,0.3)', borderRight: '2px solid rgba(0,255,231,0.3)' },
-                { bottom: -8, left: -8, borderBottom: '2px solid rgba(255,45,120,0.3)', borderLeft: '2px solid rgba(255,45,120,0.3)' },
-                { bottom: -8, right: -8, borderBottom: '2px solid #ff2d78', borderRight: '2px solid #ff2d78' },
-              ].map((s, i) => (
-                <Box key={i} sx={{ position: 'absolute', width: 28, height: 28, zIndex: 3, ...s }} />
+                { id: 'corner-1', top: -8, left: -8, borderTop: '2px solid #00ffe7', borderLeft: '2px solid #00ffe7' },
+                { id: 'corner-2', top: -8, right: -8, borderTop: '2px solid rgba(0,255,231,0.3)', borderRight: '2px solid rgba(0,255,231,0.3)' },
+                { id: 'corner-3', bottom: -8, left: -8, borderBottom: '2px solid rgba(255,45,120,0.3)', borderLeft: '2px solid rgba(255,45,120,0.3)' },
+                { id: 'corner-4', bottom: -8, right: -8, borderBottom: '2px solid #ff2d78', borderRight: '2px solid #ff2d78' },
+              ].map((s) => (
+                <Box key={`corner-img-${s.id}`} sx={{ position: 'absolute', width: 28, height: 28, zIndex: 3, ...s }} />
               ))}
 
               {/* Glow behind */}
@@ -66,7 +66,7 @@ export default function AboutSection() {
               {/* Stats bar */}
               <Box sx={{ display: 'flex', mt: 1.5, border: '1px solid rgba(255,255,255,0.05)', borderRadius: '4px', overflow: 'hidden' }}>
                 {stats.map((s, i) => (
-                  <Box key={i} sx={{
+                  <Box key={s.label} sx={{
                     flex: 1, py: 2, textAlign: 'center',
                     bgcolor: 'rgba(10,10,18,0.95)',
                     borderRight: i < stats.length - 1 ? '1px solid rgba(255,255,255,0.05)' : 'none',

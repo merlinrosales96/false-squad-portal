@@ -61,8 +61,8 @@ export default function Footer() {
                 { href: 'https://www.tiktok.com/@false.squad', color: '#ff0050', icon: <FaTiktok size={17} /> },
                 { href: 'https://www.instagram.com/false.squad/', color: '#e1306c', icon: <Instagram fontSize="small" /> },
                 { href: 'https://www.youtube.com/@falsesquadtalks', color: '#ff0000', icon: <YouTube fontSize="small" /> },
-              ].map((s, i) => (
-                <IconButton key={i} href={s.href} target="_blank" sx={{
+              ].map((s) => (
+                <IconButton key={s.href} href={s.href} target="_blank" sx={{
                   color: 'rgba(255,255,255,0.3)', width: 42, height: 42,
                   border: '1px solid rgba(255,255,255,0.07)', borderRadius: '4px',
                   transition: 'all 0.3s ease',
@@ -87,14 +87,14 @@ export default function Footer() {
             </Typography>
             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.8 }}>
               {[
-                { label: 'SQUAD', status: 'ONLINE', color: '#00ffe7' },
-                { label: 'CAOS', status: 'ACTIVO', color: '#ff2d78' },
-                { label: 'ASCO', status: 'NINGUNO', color: '#9b5de5' },
+                { label: 'SQUAD', status: 'ONLINE', color: '#00ffe7', duration: 5 },
+                { label: 'CAOS', status: 'ACTIVO', color: '#ff2d78', duration: 4 },
+                { label: 'ASCO', status: 'NINGUNO', color: '#9b5de5', duration: 6 },
               ].map((row) => (
                 <Box key={row.label} sx={{ display: 'flex', gap: 2, alignItems: 'center', justifyContent: { xs: 'center', md: 'flex-end' } }}>
                   <Typography sx={{ fontFamily: 'RussoOne', fontSize: '0.6rem', letterSpacing: 2, color: 'rgba(255,255,255,0.2)' }}>{row.label}</Typography>
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.8 }}>
-                    <Box sx={{ width: 4, height: 4, borderRadius: '50%', bgcolor: row.color, boxShadow: `0 0 5px ${row.color}`, animation: `${flicker} ${4 + Math.random() * 3}s infinite` }} />
+                    <Box sx={{ width: 4, height: 4, borderRadius: '50%', bgcolor: row.color, boxShadow: `0 0 5px ${row.color}`, animation: `${flicker} ${row.duration}s infinite` }} />
                     <Typography sx={{ fontFamily: 'RussoOne', fontSize: '0.6rem', letterSpacing: 2, color: row.color }}>{row.status}</Typography>
                   </Box>
                 </Box>

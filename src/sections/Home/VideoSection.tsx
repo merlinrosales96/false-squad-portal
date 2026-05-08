@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
+import { useQuery } from "@tanstack/react-query";
 import { Box, Typography, Container, Skeleton, keyframes } from "@mui/material";
 
 const YOUTUBE_API_KEY = import.meta.env.VITE_YOUTUBE_API_KEY;
@@ -17,51 +18,44 @@ interface YTVideo {
   featured: boolean;
 }
 
+async function fetchVideos(): Promise<YTVideo[]> {
+  if (!YOUTUBE_API_KEY || !CHANNEL_ID)
+    throw new Error("Faltan VITE_YOUTUBE_API_KEY o VITE_YOUTUBE_CHANNEL_ID en .env");
+
+  const url =
+    `https://www.googleapis.com/youtube/v3/search` +
+    `?key=${YOUTUBE_API_KEY}` +
+    `&channelId=${CHANNEL_ID}` +
+    `&part=snippet` +
+    `&order=date` +
+    `&type=video` +
+    `&maxResults=${MAX_RESULTS}`;
+
+  const res = await fetch(url);
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  const data = await res.json();
+
+  return (data.items ?? []).map((item: any, i: number) => ({
+    id:       item.id.videoId,
+    title:    item.snippet.title,
+    featured: i === 0,
+  }));
+}
+
 const YouTubeGallery: React.FC = () => {
-  const [videos, setVideos]   = useState<YTVideo[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError]     = useState(false);
-
-  useEffect(() => {
-    if (!YOUTUBE_API_KEY || !CHANNEL_ID) {
-      console.warn("Faltan VITE_YOUTUBE_API_KEY o VITE_YOUTUBE_CHANNEL_ID en .env");
-      setError(true);
-      setLoading(false);
-      return;
-    }
-
-    const url =
-      `https://www.googleapis.com/youtube/v3/search` +
-      `?key=${YOUTUBE_API_KEY}` +
-      `&channelId=${CHANNEL_ID}` +
-      `&part=snippet` +
-      `&order=date` +
-      `&type=video` +
-      `&maxResults=${MAX_RESULTS}`;
-
-    fetch(url)
-      .then((res) => { if (!res.ok) throw new Error(`HTTP ${res.status}`); return res.json(); })
-      .then((data) => {
-        setVideos((data.items ?? []).map((item: any, i: number) => ({
-          id: item.id.videoId,
-          title: item.snippet.title,
-          featured: i === 0,
-        })));
-        setLoading(false);
-      })
-      .catch((err) => { console.error("YouTube API error:", err); setError(true); setLoading(false); });
-  }, []);
+  const { data: videos = [], isLoading: loading, isError: error } = useQuery({
+    queryKey: ['yt-videos', CHANNEL_ID],
+    queryFn:  fetchVideos,
+    staleTime: 1000 * 60 * 10,
+  });
 
   return (
     <Box component="section" id="videos" sx={{
       minHeight: "100vh", py: 14,
       bgcolor: "#04040a", position: "relative", overflow: "hidden",
     }}>
-      {/* Grid bg */}
       <Box className="grid-bg" sx={{ position: "absolute", inset: 0 }} />
       <Box className="scanlines-overlay" />
-
-      {/* Glows */}
       <Box sx={{ position: "absolute", top: "20%", right: "-8%", width: "500px", height: "500px", borderRadius: "50%", background: "radial-gradient(circle, rgba(255,45,120,0.06) 0%, transparent 70%)", pointerEvents: "none" }} />
       <Box sx={{ position: "absolute", bottom: "10%", left: "-8%", width: "400px", height: "400px", borderRadius: "50%", background: "radial-gradient(circle, rgba(0,255,231,0.05) 0%, transparent 70%)", pointerEvents: "none" }} />
 
@@ -108,7 +102,7 @@ const YouTubeGallery: React.FC = () => {
         {loading && !error && (
           <Box sx={{ display: "grid", gap: 2, gridTemplateColumns: { xs: "1fr", sm: "repeat(2,1fr)", md: "repeat(3,1fr)" } }}>
             {Array.from({ length: MAX_RESULTS }).map((_, i) => (
-              <Skeleton key={i} variant="rectangular" sx={{
+              <Skeleton key={`skeleton-${i}`} variant="rectangular" sx={{
                 borderRadius: "4px",
                 bgcolor: "rgba(255,255,255,0.04)",
                 height: i === 0 ? 380 : 200,
@@ -127,7 +121,7 @@ const YouTubeGallery: React.FC = () => {
             gridTemplateColumns: { xs: "1fr", sm: "repeat(2,1fr)", md: "repeat(3,1fr)" },
             gridAutoRows: "minmax(200px, auto)",
           }}>
-            {videos.map((video) => (
+            {videos.map((video: any) => (
               <Box key={video.id} sx={{
                 borderRadius: "4px",
                 bgcolor: "rgba(10,10,18,0.8)",
@@ -141,7 +135,6 @@ const YouTubeGallery: React.FC = () => {
                   borderColor: "rgba(255,45,120,0.25)",
                   boxShadow: "0 8px 30px rgba(255,45,120,0.1), 0 0 0 1px rgba(255,45,120,0.08)",
                 },
-                // Bottom accent line on hover
                 "&::after": {
                   content: '""', position: "absolute", bottom: 0, left: 0, right: 0,
                   height: "1px",
@@ -149,7 +142,6 @@ const YouTubeGallery: React.FC = () => {
                   opacity: 0, transition: "opacity 0.3s",
                 },
                 "&:hover::after": { opacity: 1 },
-                // Left accent line — always visible on featured
                 "&::before": video.featured ? {
                   content: '""', position: "absolute", top: 0, left: 0, bottom: 0,
                   width: "2px",
@@ -157,7 +149,6 @@ const YouTubeGallery: React.FC = () => {
                   zIndex: 2,
                 } : {},
               }}>
-                {/* iframe */}
                 <Box sx={{ width: "100%", height: video.featured ? "87%" : "77%", position: "relative" }}>
                   <iframe
                     style={{ width: "100%", height: "100%", border: 0, display: "block" }}
@@ -167,8 +158,6 @@ const YouTubeGallery: React.FC = () => {
                     allowFullScreen
                   />
                 </Box>
-
-                {/* Footer */}
                 <Box sx={{
                   p: 1.5, display: "flex", alignItems: "center", gap: 1.5,
                   borderTop: "1px solid rgba(255,255,255,0.04)",

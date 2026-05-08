@@ -16,6 +16,7 @@ function AppAppBar() {
   const trigger = useScrollTrigger({ disableHysteresis: true, threshold: 40 });
   const location = useLocation();
   const navigate = useNavigate();
+  const CURRENT_YEAR = new Date().getFullYear();
 
   const scrollToSection = (sectionId: string) => {
     const el = document.getElementById(sectionId);
@@ -147,7 +148,7 @@ function AppAppBar() {
           ))}
           <Box sx={{ mt: 'auto', pt: 3, borderTop: '1px solid rgba(255,255,255,0.05)' }}>
             <Typography sx={{ fontFamily: 'RussoOne', fontSize: '0.58rem', letterSpacing: 3, color: 'rgba(255,255,255,0.15)' }}>
-              FALSE SQUAD © {new Date().getFullYear()}
+              FALSE SQUAD © {CURRENT_YEAR}
             </Typography>
           </Box>
         </Box>

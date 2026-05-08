@@ -39,12 +39,12 @@ const Hero = () => (
 
     {/* Corner HUD */}
     {[
-      { top: 24, left: 24, borderTop: '1.5px solid', borderLeft: '1.5px solid', borderColor: 'rgba(0,255,231,0.4)', w: 32, h: 32 },
-      { top: 24, right: 24, borderTop: '1.5px solid', borderRight: '1.5px solid', borderColor: 'rgba(0,255,231,0.4)', w: 32, h: 32 },
-      { bottom: 24, left: 24, borderBottom: '1.5px solid', borderLeft: '1.5px solid', borderColor: 'rgba(255,45,120,0.4)', w: 32, h: 32 },
-      { bottom: 24, right: 24, borderBottom: '1.5px solid', borderRight: '1.5px solid', borderColor: 'rgba(255,45,120,0.4)', w: 32, h: 32 },
-    ].map((c, i) => (
-      <Box key={i} sx={{ position: 'absolute', zIndex: 3, width: c.w, height: c.h, top: c.top, left: c.left, bottom: c.bottom, right: c.right, borderTop: c.borderTop, borderLeft: c.borderLeft, borderBottom: c.borderBottom, borderRight: c.borderRight, borderColor: c.borderColor, pointerEvents: 'none' }} />
+      { id: 'corner-1', top: 24, left: 24, borderTop: '1.5px solid', borderLeft: '1.5px solid', borderColor: 'rgba(0,255,231,0.4)', w: 32, h: 32 },
+      { id: 'corner-2', top: 24, right: 24, borderTop: '1.5px solid', borderRight: '1.5px solid', borderColor: 'rgba(0,255,231,0.4)', w: 32, h: 32 },
+      { id: 'corner-3', bottom: 24, left: 24, borderBottom: '1.5px solid', borderLeft: '1.5px solid', borderColor: 'rgba(255,45,120,0.4)', w: 32, h: 32 },
+      { id: 'corner-4', bottom: 24, right: 24, borderBottom: '1.5px solid', borderRight: '1.5px solid', borderColor: 'rgba(255,45,120,0.4)', w: 32, h: 32 },
+    ].map((c) => (
+      <Box key={`corner-${c.id}`} sx={{ position: 'absolute', zIndex: 3, width: c.w, height: c.h, top: c.top, left: c.left, bottom: c.bottom, right: c.right, borderTop: c.borderTop, borderLeft: c.borderLeft, borderBottom: c.borderBottom, borderRight: c.borderRight, borderColor: c.borderColor, pointerEvents: 'none' }} />
     ))}
 
     <Container maxWidth="md" sx={{ position: 'relative', zIndex: 4, textAlign: 'center', pt: { xs: '120px', md: '100px' }, pb: { xs: 6, md: 8 } }}>
