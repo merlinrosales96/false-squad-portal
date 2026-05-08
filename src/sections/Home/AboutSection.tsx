@@ -1,103 +1,82 @@
-import { Typography, Container, Grid, Box, alpha } from "@mui/material";
+import { Typography, Container, Grid, Box } from "@mui/material";
+import { keyframes } from "@mui/material";
+
+const flicker = keyframes`
+  0%, 94%, 100% { opacity: 1; }
+  95% { opacity: 0.3; }
+  96% { opacity: 1; }
+  97% { opacity: 0.5; }
+`;
 
 const stats = [
-  { value: '10', label: 'Integrantes', color: '#00ffe7' },
-  { value: '3+', label: 'Años juntos', color: '#ff2d78' },
-  { value: '∞', label: 'Gritadera', color: '#b060ff' },
+  { value: '7', label: 'Agentes', color: '#00ffe7' },
+  { value: '3+', label: 'Años', color: '#ff2d78' },
+  { value: '∞',  label: 'Gritadera', color: '#9b5de5' },
 ];
 
 export default function AboutSection() {
   return (
-    <Box
-      component="section"
-      id="about"
-      sx={{
-        position: 'relative',
-        minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        py: 14,
-        bgcolor: '#060608',
-        overflow: 'hidden',
-      }}
-    >
-      {/* Background image with strong overlay */}
-      <Box sx={{
-        position: 'absolute', inset: 0,
-        backgroundImage: `url(/images/about-banner.webp)`,
-        backgroundSize: 'cover', backgroundPosition: 'center',
-        opacity: 0.08,
-      }} />
+    <Box component="section" id="about" sx={{
+      position: 'relative', minHeight: '100vh',
+      display: 'flex', alignItems: 'center',
+      py: 14, bgcolor: '#04040a', overflow: 'hidden',
+    }}>
+      {/* Grid bg */}
+      <Box className="grid-bg" sx={{ position: 'absolute', inset: 0 }} />
 
-      {/* Diagonal stripe accent */}
-      <Box sx={{
-        position: 'absolute', top: 0, right: 0, width: '40%', height: '100%',
-        background: 'linear-gradient(135deg, transparent 0%, rgba(0,255,231,0.03) 100%)',
-        borderLeft: '1px solid rgba(0,255,231,0.05)',
-        pointerEvents: 'none',
-      }} />
+      {/* Glow left */}
+      <Box sx={{ position: 'absolute', top: '20%', left: '-10%', width: '500px', height: '500px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(0,255,231,0.06) 0%, transparent 70%)', pointerEvents: 'none' }} />
+      {/* Glow right */}
+      <Box sx={{ position: 'absolute', bottom: '10%', right: '-10%', width: '500px', height: '500px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(255,45,120,0.05) 0%, transparent 70%)', pointerEvents: 'none' }} />
 
-      {/* Dot grid */}
-      <Box sx={{
-        position: 'absolute', inset: 0, opacity: 0.04,
-        backgroundImage: 'radial-gradient(rgba(0,255,231,0.8) 1px, transparent 1px)',
-        backgroundSize: '30px 30px',
-      }} />
+      {/* Vertical accent line */}
+      <Box sx={{ position: 'absolute', left: 0, top: '15%', bottom: '15%', width: '1px', background: 'linear-gradient(to bottom, transparent, rgba(0,255,231,0.3), transparent)', pointerEvents: 'none' }} />
 
       <Container maxWidth="lg" sx={{ position: 'relative', zIndex: 2 }}>
-        <Grid container spacing={8} alignItems="center">
+        <Grid container spacing={{ xs: 6, md: 10 }} alignItems="center">
 
-          {/* LEFT: Image */}
+          {/* LEFT */}
           <Grid size={{ xs: 12, md: 5 }}>
             <Box sx={{ position: 'relative' }}>
-              {/* Corner accents */}
+              {/* HUD frame corners */}
               {[
-                { top: -12, left: -12, borderLeft: '3px solid #00ffe7', borderTop: '3px solid #00ffe7' },
-                { bottom: -12, right: -12, borderRight: '3px solid #ff2d78', borderBottom: '3px solid #ff2d78' },
-              ].map((style, i) => (
-                <Box key={i} sx={{ position: 'absolute', width: 40, height: 40, zIndex: 3, ...style }} />
+                { top: -8, left: -8, borderTop: '2px solid #00ffe7', borderLeft: '2px solid #00ffe7' },
+                { top: -8, right: -8, borderTop: '2px solid rgba(0,255,231,0.3)', borderRight: '2px solid rgba(0,255,231,0.3)' },
+                { bottom: -8, left: -8, borderBottom: '2px solid rgba(255,45,120,0.3)', borderLeft: '2px solid rgba(255,45,120,0.3)' },
+                { bottom: -8, right: -8, borderBottom: '2px solid #ff2d78', borderRight: '2px solid #ff2d78' },
+              ].map((s, i) => (
+                <Box key={i} sx={{ position: 'absolute', width: 28, height: 28, zIndex: 3, ...s }} />
               ))}
 
-              {/* Glow behind image */}
-              <Box sx={{
-                position: 'absolute', inset: '10%', zIndex: 0,
-                background: 'radial-gradient(circle, rgba(0,255,231,0.12) 0%, transparent 70%)',
-                filter: 'blur(30px)',
-              }} />
+              {/* Glow behind */}
+              <Box sx={{ position: 'absolute', inset: '5%', zIndex: 0, background: 'radial-gradient(circle, rgba(0,255,231,0.1) 0%, transparent 70%)', filter: 'blur(30px)' }} />
 
               <Box
-                component="img"
-                src="/images/sections/nosotros.webp"
-                alt="False Squad Group"
+                component="img" src="/images/sections/nosotros.webp" alt="False Squad"
                 sx={{
-                  width: '100%', borderRadius: '12px', position: 'relative', zIndex: 2,
-                  border: '1px solid rgba(255,255,255,0.07)',
-                  boxShadow: '0 20px 60px rgba(0,0,0,0.8), 0 0 0 1px rgba(0,255,231,0.05)',
+                  width: '100%', borderRadius: '6px', position: 'relative', zIndex: 2,
+                  border: '1px solid rgba(0,255,231,0.1)',
+                  boxShadow: '0 20px 60px rgba(0,0,0,0.9), 0 0 0 1px rgba(0,255,231,0.05)',
+                  filter: 'brightness(0.9) contrast(1.05)',
                   transition: 'all 0.4s',
-                  '&:hover': { transform: 'scale(1.01)', boxShadow: '0 24px 70px rgba(0,0,0,0.9), 0 0 30px rgba(0,255,231,0.08)' }
+                  '&:hover': { filter: 'brightness(1) contrast(1.1)', boxShadow: '0 20px 60px rgba(0,0,0,0.9), 0 0 30px rgba(0,255,231,0.08)' }
                 }}
               />
 
-              {/* Stats row below image */}
-              <Box sx={{
-                display: 'flex', gap: 0, mt: 2, borderRadius: '10px', overflow: 'hidden',
-                border: '1px solid rgba(255,255,255,0.06)',
-              }}>
+              {/* Stats bar */}
+              <Box sx={{ display: 'flex', mt: 1.5, border: '1px solid rgba(255,255,255,0.05)', borderRadius: '4px', overflow: 'hidden' }}>
                 {stats.map((s, i) => (
                   <Box key={i} sx={{
                     flex: 1, py: 2, textAlign: 'center',
-                    bgcolor: alpha('#0e0e12', 0.9),
-                    borderRight: i < stats.length - 1 ? '1px solid rgba(255,255,255,0.06)' : 'none',
-                    position: 'relative', overflow: 'hidden',
-                    '&::after': {
-                      content: '""', position: 'absolute', bottom: 0, left: '10%', right: '10%',
-                      height: '2px', background: s.color, opacity: 0.6,
-                    }
+                    bgcolor: 'rgba(10,10,18,0.95)',
+                    borderRight: i < stats.length - 1 ? '1px solid rgba(255,255,255,0.05)' : 'none',
+                    position: 'relative',
+                    '&::after': { content: '""', position: 'absolute', bottom: 0, left: '15%', right: '15%', height: '1px', background: s.color, opacity: 0.7, boxShadow: `0 0 6px ${s.color}` }
                   }}>
-                    <Typography sx={{ fontFamily: 'RussoOne', fontSize: '1.6rem', color: s.color, lineHeight: 1 }}>
+                    <Typography sx={{ fontFamily: 'RussoOne', fontSize: '1.6rem', color: s.color, lineHeight: 1, textShadow: `0 0 12px ${s.color}` }}>
                       {s.value}
                     </Typography>
-                    <Typography sx={{ fontSize: '0.65rem', letterSpacing: 2, color: 'rgba(255,255,255,0.35)', mt: 0.5, fontFamily: 'RussoOne' }}>
+                    <Typography sx={{ fontSize: '0.6rem', letterSpacing: 2.5, color: 'rgba(255,255,255,0.3)', mt: 0.5, fontFamily: 'RussoOne' }}>
                       {s.label.toUpperCase()}
                     </Typography>
                   </Box>
@@ -106,60 +85,59 @@ export default function AboutSection() {
             </Box>
           </Grid>
 
-          {/* RIGHT: Text */}
+          {/* RIGHT */}
           <Grid size={{ xs: 12, md: 7 }}>
             <Box>
               <Box component="span" className="section-tag">Quiénes somos</Box>
 
-              <Typography
-                variant="h2"
-                sx={{
-                  fontFamily: 'RussoOne', mb: 1,
-                  fontSize: { xs: '2.4rem', md: '3.5rem' },
-                  lineHeight: 1,
-                  letterSpacing: '-0.5px',
-                }}
-              >
+              {/* System ID line */}
+              <Typography sx={{ fontFamily: 'RussoOne', fontSize: '0.62rem', letterSpacing: 3, color: 'rgba(0,255,231,0.4)', mb: 1.5 }}>
+                // SISTEMA: FALSE_SQUAD.EXE — CARGANDO...
+              </Typography>
+
+              <Typography variant="h2" sx={{
+                fontFamily: 'RussoOne', mb: 1,
+                fontSize: { xs: '2.6rem', md: '4rem' },
+                lineHeight: 0.95, letterSpacing: '-1px',
+              }}>
                 ¿SI MANO,{' '}
-                <Box component="span" className="neon-text-cyan">SI?</Box>
+                <Box component="span" className="neon-cyan">SI?</Box>
               </Typography>
 
-              <Typography
-                sx={{
-                  fontFamily: 'RussoOne', color: '#ff2d78',
-                  mb: 4, fontSize: '1rem', letterSpacing: 2,
-                  textTransform: 'uppercase', opacity: 0.9,
-                }}
-              >
-                No somos solo gamers. Somos una hermandad.
+              <Typography sx={{
+                fontFamily: 'RussoOne', color: '#ff2d78',
+                mb: 4, fontSize: '0.85rem', letterSpacing: 3,
+                textTransform: 'uppercase', opacity: 0.9,
+                animation: `${flicker} 8s infinite`,
+              }}>
+                No somos solo gamers — somos una hermandad.
               </Typography>
 
-              <Box sx={{ '& p': { mb: 3, fontSize: '1.05rem', lineHeight: 1.9, color: 'rgba(255,255,255,0.65)', fontFamily: 'system-ui, sans-serif', fontWeight: 400 } }}>
+              <Box sx={{ '& p': { mb: 3, fontSize: '1rem', lineHeight: 1.9, color: 'rgba(255,255,255,0.55)', fontFamily: 'system-ui', fontWeight: 400 } }}>
                 <Typography variant="body1">
                   En <strong style={{ color: '#00ffe7' }}>False Squad</strong>, la jugada épica es secundaria.
-                  Lo que importa es la habladera de paja, las risas hasta la madrugada
-                  y ese <em>brotherhood</em> que se forja entre gritos y fails.
+                  Lo que importa es la habladera de paja, las risas hasta la madrugada y ese{' '}
+                  <em>brotherhood</em> que se forja entre gritos y fails.
                 </Typography>
                 <Typography variant="body1">
-                  Aquí jugamos <strong style={{ color: '#ff2d78' }}>SIN ASCO</strong>. Construimos
-                  lazos, forjamos historias y mantenemos la buena vibra por encima de
-                  cualquier marcador.
+                  7 venezolanos regados por el mundo,{' '}
+                  <strong style={{ color: '#ff2d78' }}>conectados por el squad.</strong>{' '}
+                  Sin fronteras, sin filtro, sin asco.
                 </Typography>
               </Box>
 
               {/* Tags */}
-              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1.5, mt: 2 }}>
-                {['#FalseSquadSINASCO', '#SiMano', '#Gaming', '#Brotherhood'].map((tag) => (
+              <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 1, mt: 1 }}>
+                {['#FalseSquad', '#SinAsco', '#Venezuela', '#Gaming', '#Brotherhood'].map((tag) => (
                   <Box key={tag} sx={{
-                    px: 2, py: 0.8,
-                    bgcolor: 'rgba(0,255,231,0.05)',
-                    border: '1px solid rgba(0,255,231,0.15)',
-                    borderRadius: '6px',
-                    color: '#00ffe7', fontSize: '0.8rem',
-                    fontFamily: 'RussoOne', letterSpacing: 1,
-                    transition: 'all 0.2s',
-                    cursor: 'default',
-                    '&:hover': { bgcolor: 'rgba(0,255,231,0.1)', borderColor: 'rgba(0,255,231,0.4)' }
+                    px: 1.8, py: 0.7,
+                    bgcolor: 'rgba(0,255,231,0.04)',
+                    border: '1px solid rgba(0,255,231,0.12)',
+                    borderRadius: '3px',
+                    color: 'rgba(0,255,231,0.7)', fontSize: '0.75rem',
+                    fontFamily: 'RussoOne', letterSpacing: 0.5,
+                    transition: 'all 0.2s', cursor: 'default',
+                    '&:hover': { bgcolor: 'rgba(0,255,231,0.09)', borderColor: 'rgba(0,255,231,0.35)', color: '#00ffe7' }
                   }}>
                     {tag}
                   </Box>

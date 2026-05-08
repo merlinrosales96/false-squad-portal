@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { Card, CardMedia, CardContent, Typography, Box } from '@mui/material';
-import { useNavigate } from 'react-router-dom';
 import { $ } from '../../lib/dom-selector';
 
 interface Props {
@@ -13,7 +12,6 @@ let globalActiveFighterId: string | null = null;
 let globalHideFighterTimer: ReturnType<typeof setTimeout> | null = null;
 
 const MemberCard: React.FC<Props> = ({ id, name, extraClass }: Props) => {
-  const navigate = useNavigate();
   const [isActivated, setIsActivated] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
@@ -53,9 +51,9 @@ const MemberCard: React.FC<Props> = ({ id, name, extraClass }: Props) => {
     }
     if (globalHideFighterTimer) { clearTimeout(globalHideFighterTimer); globalHideFighterTimer = null; }
     $('#landing')?.classList.add('hidden');
-    const heroText  = $(`[data-id="hero-text-${targetId}"]`);
+    const heroText = $(`[data-id="hero-text-${targetId}"]`);
     const heroImage = $(`[data-id="hero-image-${targetId}"]`);
-    const heroMask  = $(`#mask-fade-text-${targetId}`);
+    const heroMask = $(`#mask-fade-text-${targetId}`);
     heroText?.classList.remove('hidden', 'animate-zoom-out');
     heroImage?.classList.remove('hidden', 'animate-fade-out-down');
     heroText?.classList.add('animate-zoom-in');
@@ -67,7 +65,7 @@ const MemberCard: React.FC<Props> = ({ id, name, extraClass }: Props) => {
   const handlePointerLeaveLogic = () => {
     if (!globalActiveFighterId) return;
     const text = $(`[data-id="hero-text-${globalActiveFighterId}"]`);
-    const img  = $(`[data-id="hero-image-${globalActiveFighterId}"]`);
+    const img = $(`[data-id="hero-image-${globalActiveFighterId}"]`);
     const mask = $(`#mask-fade-text-${globalActiveFighterId}`);
     text?.classList.remove('animate-zoom-in'); text?.classList.add('animate-zoom-out');
     img?.classList.remove('animate-slide-up-fade'); img?.classList.add('animate-fade-out-down');
@@ -88,10 +86,10 @@ const MemberCard: React.FC<Props> = ({ id, name, extraClass }: Props) => {
         e.preventDefault(); e.stopPropagation();
         setIsActivated(true); handlePointerEnterLogic(id);
       } else {
-        navigate(`/squad/${id}`);
+        window.location.href = `/squad/${id}`;
       }
     } else {
-      navigate(`/squad/${id}`);
+      window.location.href = `/squad/${id}`;
     }
   };
 
@@ -114,7 +112,7 @@ const MemberCard: React.FC<Props> = ({ id, name, extraClass }: Props) => {
         <CardMedia
           component="img"
           className="aspect-[900/1200] h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
-          image={`/images/members/big/${id}.png`}
+          image={`/images/members/cards/${id}.webp`}
           alt={name}
           loading="lazy"
         />

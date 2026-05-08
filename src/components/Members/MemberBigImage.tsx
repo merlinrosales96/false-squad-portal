@@ -40,7 +40,7 @@ const MemberBigImage: React.FC<Props> = ({ members }) => {
           <img
             key={id}
             data-id={`hero-image-${id}`}
-            src={`/images/members/big/${id}.png`}
+            src={`/images/members/cards/${id}.webp`}
             alt={name}
             decoding="async"
             className="absolute hidden h-full w-auto object-cover lg:object-contain"

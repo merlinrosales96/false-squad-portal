@@ -1,10 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Box, Typography, Container, alpha, Skeleton } from "@mui/material";
-import { Image } from "../../components/Image";
+import { Box, Typography, Container, Skeleton, keyframes } from "@mui/material";
 
 const YOUTUBE_API_KEY = import.meta.env.VITE_YOUTUBE_API_KEY;
 const CHANNEL_ID      = import.meta.env.VITE_YOUTUBE_CHANNEL_ID;
 const MAX_RESULTS     = 6;
+
+const flicker = keyframes`
+  0%, 94%, 100% { opacity: 1; }
+  95% { opacity: 0.3; }
+  97% { opacity: 0.6; }
+`;
 
 interface YTVideo {
   id:       string;
@@ -35,111 +40,82 @@ const YouTubeGallery: React.FC = () => {
       `&maxResults=${MAX_RESULTS}`;
 
     fetch(url)
-      .then((res) => {
-        if (!res.ok) throw new Error(`HTTP ${res.status}`);
-        return res.json();
-      })
+      .then((res) => { if (!res.ok) throw new Error(`HTTP ${res.status}`); return res.json(); })
       .then((data) => {
-        const items: YTVideo[] = (data.items ?? []).map(
-          (item: any, index: number) => ({
-            id:       item.id.videoId,
-            title:    item.snippet.title,
-            featured: index === 0,
-          })
-        );
-        setVideos(items);
+        setVideos((data.items ?? []).map((item: any, i: number) => ({
+          id: item.id.videoId,
+          title: item.snippet.title,
+          featured: i === 0,
+        })));
         setLoading(false);
       })
-      .catch((err) => {
-        console.error("YouTube API error:", err);
-        setError(true);
-        setLoading(false);
-      });
+      .catch((err) => { console.error("YouTube API error:", err); setError(true); setLoading(false); });
   }, []);
 
   return (
-    <Box
-      component="section"
-      id="videos"
-      sx={{
-        minHeight: "100vh",
-        py: 14,
-        bgcolor: "#060608",
-        position: "relative",
-        overflow: "hidden",
-      }}
-    >
-      {/* Background grid pattern */}
-      <Box sx={{
-        position: "absolute", inset: 0, opacity: 0.025,
-        backgroundImage: `
-          linear-gradient(rgba(255,45,120,0.8) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(255,45,120,0.8) 1px, transparent 1px)
-        `,
-        backgroundSize: "80px 80px",
-      }} />
+    <Box component="section" id="videos" sx={{
+      minHeight: "100vh", py: 14,
+      bgcolor: "#04040a", position: "relative", overflow: "hidden",
+    }}>
+      {/* Grid bg */}
+      <Box className="grid-bg" sx={{ position: "absolute", inset: 0 }} />
+      <Box className="scanlines-overlay" />
 
-      {/* Side glow */}
-      <Box sx={{
-        position: "absolute", top: "30%", right: "-5%", zIndex: 0,
-        width: "400px", height: "400px", borderRadius: "50%",
-        background: "radial-gradient(circle, rgba(255,45,120,0.07) 0%, transparent 70%)",
-      }} />
+      {/* Glows */}
+      <Box sx={{ position: "absolute", top: "20%", right: "-8%", width: "500px", height: "500px", borderRadius: "50%", background: "radial-gradient(circle, rgba(255,45,120,0.06) 0%, transparent 70%)", pointerEvents: "none" }} />
+      <Box sx={{ position: "absolute", bottom: "10%", left: "-8%", width: "400px", height: "400px", borderRadius: "50%", background: "radial-gradient(circle, rgba(0,255,231,0.05) 0%, transparent 70%)", pointerEvents: "none" }} />
 
       <Container maxWidth="lg" sx={{ position: "relative", zIndex: 2 }}>
+
         {/* Header */}
         <Box sx={{ mb: 8, textAlign: "center" }}>
           <Box component="span" className="section-tag" sx={{ justifyContent: "center" }}>
             Contenido
           </Box>
-          <Image
-            image="/images/sections/videos.webp"
-            alt="Videos Title"
-            className="mx-auto mb-4 w-full max-w-[300px]"
-          />
           <Typography sx={{
-            fontFamily: "RussoOne", letterSpacing: 4,
-            fontSize: "0.75rem", color: "rgba(255,255,255,0.3)",
-            textTransform: "uppercase",
+            fontFamily: "RussoOne",
+            fontSize: { xs: "2.5rem", md: "4rem" },
+            lineHeight: 0.95, letterSpacing: "-1px", mb: 1,
+            color: "rgba(255,255,255,0.95)",
           }}>
-            Highlights & Fails — YouTube
+            CLIPS &{" "}
+            <Box component="span" className="neon-magenta">FAILS</Box>
+          </Typography>
+          <Typography sx={{
+            fontFamily: "RussoOne", fontSize: "0.62rem",
+            letterSpacing: 4, color: "rgba(255,255,255,0.25)",
+            textTransform: "uppercase", mt: 1,
+          }}>
+            // HIGHLIGHTS — YOUTUBE
           </Typography>
         </Box>
 
-        {/* Error state */}
+        {/* Error */}
         {error && (
-          <Box sx={{ textAlign: "center", py: 10 }}>
-            <Typography sx={{ color: "rgba(255,255,255,0.3)", fontFamily: "RussoOne", letterSpacing: 2 }}>
-              No se pudieron cargar los videos.
+          <Box sx={{ textAlign: "center", py: 10, border: "1px solid rgba(255,45,120,0.15)", borderRadius: "6px", bgcolor: "rgba(255,45,120,0.03)" }}>
+            <Typography sx={{ fontFamily: "RussoOne", fontSize: "0.65rem", letterSpacing: 4, color: "rgba(255,255,255,0.25)", mb: 2 }}>
+              // ERROR: NO SE PUDO CONECTAR CON EL CANAL
             </Typography>
-            <Typography
-              component="a"
-              href="https://www.youtube.com/@falsesquadtalks"
-              target="_blank"
-              sx={{ color: "#ff2d78", fontFamily: "RussoOne", fontSize: "0.85rem", mt: 1, display: "block" }}
-            >
-              Ver canal en YouTube →
+            <Typography component="a" href="https://www.youtube.com/@falsesquadtalks" target="_blank"
+              sx={{ color: "#ff2d78", fontFamily: "RussoOne", fontSize: "0.85rem", letterSpacing: 2, display: "block", textDecoration: "none",
+                "&:hover": { textShadow: "0 0 10px rgba(255,45,120,0.6)" } }}>
+              ▶ IR AL CANAL →
             </Typography>
           </Box>
         )}
 
         {/* Loading skeletons */}
         {loading && !error && (
-          <Box sx={{
-            display: "grid", gap: 2.5,
-            gridTemplateColumns: { xs: "1fr", sm: "repeat(2, 1fr)", md: "repeat(3, 1fr)" },
-          }}>
+          <Box sx={{ display: "grid", gap: 2, gridTemplateColumns: { xs: "1fr", sm: "repeat(2,1fr)", md: "repeat(3,1fr)" } }}>
             {Array.from({ length: MAX_RESULTS }).map((_, i) => (
-              <Skeleton
-                key={i}
-                variant="rectangular"
-                sx={{
-                  borderRadius: "14px", bgcolor: alpha("#0e0e12", 0.8),
-                  height: i === 0 ? 400 : 220,
-                  gridColumn: { md: i === 0 ? "span 2" : "span 1" },
-                  gridRow:    { md: i === 0 ? "span 2" : "span 1" },
-                }}
-              />
+              <Skeleton key={i} variant="rectangular" sx={{
+                borderRadius: "4px",
+                bgcolor: "rgba(255,255,255,0.04)",
+                height: i === 0 ? 380 : 200,
+                gridColumn: { md: i === 0 ? "span 2" : "span 1" },
+                gridRow:    { md: i === 0 ? "span 2" : "span 1" },
+                "&::after": { background: "linear-gradient(90deg, transparent, rgba(0,255,231,0.04), transparent)" },
+              }} />
             ))}
           </Box>
         )}
@@ -147,37 +123,42 @@ const YouTubeGallery: React.FC = () => {
         {/* Video grid */}
         {!loading && !error && (
           <Box sx={{
-            display: "grid", gap: 2.5,
-            gridTemplateColumns: { xs: "1fr", sm: "repeat(2, 1fr)", md: "repeat(3, 1fr)" },
-            gridAutoRows: "minmax(220px, auto)",
+            display: "grid", gap: 2,
+            gridTemplateColumns: { xs: "1fr", sm: "repeat(2,1fr)", md: "repeat(3,1fr)" },
+            gridAutoRows: "minmax(200px, auto)",
           }}>
             {videos.map((video) => (
-              <Box
-                key={video.id}
-                sx={{
-                  borderRadius: "14px",
-                  bgcolor: alpha("#0e0e12", 0.8),
-                  border: "1px solid rgba(255,255,255,0.05)",
-                  transition: "all 0.35s ease",
-                  position: "relative",
-                  overflow: "hidden",
-                  gridColumn: { md: video.featured ? "span 2" : "span 1" },
-                  gridRow:    { md: video.featured ? "span 2" : "span 1" },
-                  "&:hover": {
-                    transform: "translateY(-4px)",
-                    borderColor: "rgba(255,45,120,0.3)",
-                    boxShadow: "0 10px 40px rgba(255,45,120,0.12)",
-                  },
-                  "&::after": {
-                    content: '""', position: "absolute", bottom: 0, left: 0, right: 0,
-                    height: "2px",
-                    background: "linear-gradient(90deg, transparent, rgba(255,45,120,0.5), transparent)",
-                    opacity: 0, transition: "opacity 0.3s",
-                  },
-                  "&:hover::after": { opacity: 1 },
-                }}
-              >
-                <Box sx={{ width: "100%", height: video.featured ? "88%" : "78%", position: "relative" }}>
+              <Box key={video.id} sx={{
+                borderRadius: "4px",
+                bgcolor: "rgba(10,10,18,0.8)",
+                border: "1px solid rgba(255,255,255,0.05)",
+                transition: "all 0.3s ease",
+                position: "relative", overflow: "hidden",
+                gridColumn: { md: video.featured ? "span 2" : "span 1" },
+                gridRow:    { md: video.featured ? "span 2" : "span 1" },
+                "&:hover": {
+                  transform: "translateY(-3px)",
+                  borderColor: "rgba(255,45,120,0.25)",
+                  boxShadow: "0 8px 30px rgba(255,45,120,0.1), 0 0 0 1px rgba(255,45,120,0.08)",
+                },
+                // Bottom accent line on hover
+                "&::after": {
+                  content: '""', position: "absolute", bottom: 0, left: 0, right: 0,
+                  height: "1px",
+                  background: "linear-gradient(90deg, transparent, #ff2d78, transparent)",
+                  opacity: 0, transition: "opacity 0.3s",
+                },
+                "&:hover::after": { opacity: 1 },
+                // Left accent line — always visible on featured
+                "&::before": video.featured ? {
+                  content: '""', position: "absolute", top: 0, left: 0, bottom: 0,
+                  width: "2px",
+                  background: "linear-gradient(to bottom, #ff2d78, #9b5de5)",
+                  zIndex: 2,
+                } : {},
+              }}>
+                {/* iframe */}
+                <Box sx={{ width: "100%", height: video.featured ? "87%" : "77%", position: "relative" }}>
                   <iframe
                     style={{ width: "100%", height: "100%", border: 0, display: "block" }}
                     src={`https://www.youtube.com/embed/${video.id}?modestbranding=1&rel=0&color=white`}
@@ -186,25 +167,25 @@ const YouTubeGallery: React.FC = () => {
                     allowFullScreen
                   />
                 </Box>
+
+                {/* Footer */}
                 <Box sx={{
-                  p: 2, display: "flex", alignItems: "center", gap: 1.5,
+                  p: 1.5, display: "flex", alignItems: "center", gap: 1.5,
                   borderTop: "1px solid rgba(255,255,255,0.04)",
+                  bgcolor: "rgba(4,4,10,0.6)",
                 }}>
                   <Box sx={{
-                    width: 6, height: 6, borderRadius: "50%",
+                    width: 5, height: 5, borderRadius: "50%", flexShrink: 0,
                     bgcolor: video.featured ? "#ff2d78" : "#00ffe7",
-                    boxShadow: `0 0 8px ${video.featured ? "#ff2d78" : "#00ffe7"}`,
-                    flexShrink: 0,
+                    boxShadow: `0 0 6px ${video.featured ? "#ff2d78" : "#00ffe7"}`,
+                    animation: `${flicker} ${video.featured ? 4 : 6}s infinite`,
                   }} />
                   <Typography sx={{
                     fontFamily: "RussoOne",
-                    fontSize: video.featured ? "1rem" : "0.82rem",
-                    color: "rgba(255,255,255,0.75)",
+                    fontSize: video.featured ? "0.9rem" : "0.75rem",
+                    color: "rgba(255,255,255,0.6)",
                     letterSpacing: 0.5,
-                    // Truncar títulos largos
-                    overflow: "hidden",
-                    textOverflow: "ellipsis",
-                    whiteSpace: "nowrap",
+                    overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap",
                   }}>
                     {video.title}
                   </Typography>
@@ -217,28 +198,23 @@ const YouTubeGallery: React.FC = () => {
         {/* CTA */}
         {!loading && (
           <Box sx={{ textAlign: "center", mt: 8 }}>
-            <Typography
-              component="a"
-              href="https://www.youtube.com/@falsesquadtalks"
-              target="_blank"
-              sx={{
-                display: "inline-flex", alignItems: "center", gap: 1.5,
-                px: 5, py: 1.8, borderRadius: "10px",
-                border: "1.5px solid rgba(255,45,120,0.3)",
-                color: "#ff2d78", fontFamily: "RussoOne",
-                fontSize: "0.9rem", letterSpacing: 1.5,
-                textDecoration: "none",
-                bgcolor: "rgba(255,45,120,0.04)",
-                transition: "all 0.3s",
-                "&:hover": {
-                  bgcolor: "rgba(255,45,120,0.1)",
-                  borderColor: "#ff2d78",
-                  transform: "translateY(-2px)",
-                  boxShadow: "0 8px 24px rgba(255,45,120,0.2)",
-                },
-              }}
-            >
-              VER TODO EN YOUTUBE →
+            <Typography component="a" href="https://www.youtube.com/@falsesquadtalks" target="_blank" sx={{
+              display: "inline-flex", alignItems: "center", gap: 2,
+              px: 5, py: 1.8, borderRadius: "4px",
+              border: "1px solid rgba(255,45,120,0.25)",
+              color: "#ff2d78", fontFamily: "RussoOne",
+              fontSize: "0.82rem", letterSpacing: 2,
+              textDecoration: "none",
+              bgcolor: "rgba(255,45,120,0.03)",
+              transition: "all 0.3s",
+              "&:hover": {
+                bgcolor: "rgba(255,45,120,0.08)",
+                borderColor: "#ff2d78",
+                transform: "translateY(-2px)",
+                boxShadow: "0 0 20px rgba(255,45,120,0.2)",
+              },
+            }}>
+              ▶ VER TODO EN YOUTUBE
             </Typography>
           </Box>
         )}

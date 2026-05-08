@@ -1,99 +1,84 @@
 import React from 'react';
 import { MEMBERS } from '../../const/members';
 import SelectYourMember from '../../components/Members/SelectYourMember';
+//import { keyframes } from '@mui/material';
+
+/*const flicker = keyframes`
+  0%, 94%, 100% { opacity: 1; }
+  95% { opacity: 0.3; }
+  97% { opacity: 0.6; }
+`;*/
 
 const SquadSection: React.FC = () => {
-    return (
-        <section
-            id='squad'
-            className="relative flex min-h-screen w-full overflow-hidden"
-            style={{ backgroundColor: '#060608' }}
-        >
-            {/* Banner de fondo — muy tenue para no pisar el estilo */}
-            <div
-                className="mask-fade-bottom animate-fade-in absolute inset-0 w-full bg-cover bg-center duration-75"
-                style={{
-                    backgroundImage: "url('/images/banner.png')",
-                    opacity: 0.07,
-                }}
-            />
+  return (
+    <section
+      id='squad'
+      className="relative flex min-h-screen w-full overflow-hidden"
+      style={{ backgroundColor: '#04040a' }}
+    >
+      {/* Grid bg */}
+      <div className="grid-bg absolute inset-0 pointer-events-none" />
 
-            {/* Grid lines — igual que las otras secciones */}
-            <div
-                className="absolute inset-0 pointer-events-none"
-                style={{
-                    opacity: 0.035,
-                    backgroundImage: `
-                        linear-gradient(rgba(0,255,231,0.8) 1px, transparent 1px),
-                        linear-gradient(90deg, rgba(0,255,231,0.8) 1px, transparent 1px)
-                    `,
-                    backgroundSize: '60px 60px',
-                }}
-            />
+      {/* Glows */}
+      <div className="absolute pointer-events-none" style={{ top: '5%', left: '-8%', width: '500px', height: '500px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(0,255,231,0.06) 0%, transparent 70%)' }} />
+      <div className="absolute pointer-events-none" style={{ top: '15%', right: '-8%', width: '500px', height: '500px', borderRadius: '50%', background: 'radial-gradient(circle, rgba(255,45,120,0.05) 0%, transparent 70%)' }} />
 
-            {/* Dot grid sutil */}
-            <div
-                className="absolute inset-0 pointer-events-none"
-                style={{
-                    opacity: 0.03,
-                    backgroundImage: 'radial-gradient(rgba(0,255,231,0.8) 1px, transparent 1px)',
-                    backgroundSize: '30px 30px',
-                }}
-            />
+      {/* Scanline */}
+      <div className="scanlines-overlay" />
 
-            {/* Glow cyan izquierda */}
-            <div className="absolute pointer-events-none" style={{
-                top: '10%', left: '-8%',
-                width: '500px', height: '500px', borderRadius: '50%',
-                background: 'radial-gradient(circle, rgba(0,255,231,0.07) 0%, transparent 70%)',
-            }} />
+      <div className="relative flex w-full flex-col items-center p-8 text-center">
 
-            {/* Glow magenta derecha */}
-            <div className="absolute pointer-events-none" style={{
-                top: '20%', right: '-8%',
-                width: '500px', height: '500px', borderRadius: '50%',
-                background: 'radial-gradient(circle, rgba(255,45,120,0.06) 0%, transparent 70%)',
-            }} />
+        {/* Landing */}
+        <div id="landing" className="absolute top-0 flex w-full flex-col items-center justify-center" style={{ paddingTop: '14vh' }}>
 
-            {/* Contenido principal */}
-            <div className="relative flex w-full flex-col items-center p-8 text-center">
+          {/* System status */}
+          <div style={{
+            display: 'inline-flex', alignItems: 'center', gap: '8px',
+            padding: '4px 14px', borderRadius: '3px', marginBottom: '20px',
+            background: 'rgba(0,255,231,0.04)',
+            border: '1px solid rgba(0,255,231,0.15)',
+            fontSize: '0.62rem', letterSpacing: '4px',
+            color: 'rgba(0,255,231,0.7)', fontFamily: 'RussoOne',
+          }}>
+            <span style={{ display: 'inline-block', width: 5, height: 5, borderRadius: '50%', background: '#00ffe7', boxShadow: '0 0 6px #00ffe7' }} />
+            AGENTES ACTIVOS // {MEMBERS.length} CONECTADOS
+          </div>
 
-                {/* Landing state: título + logo */}
-                <div id="landing" className="absolute top-0 flex w-full flex-col items-center justify-center" style={{ paddingTop: '15vh' }}>
+          {/* Title */}
+          <h2 style={{
+            fontFamily: 'RussoOne',
+            fontSize: 'clamp(2.8rem, 9vw, 6rem)',
+            lineHeight: 0.95, margin: '0 0 8px 0',
+            color: 'rgba(255,255,255,0.95)',
+            letterSpacing: '-2px',
+          }}>
+            EL{' '}
+            <span style={{ color: '#00ffe7', textShadow: '0 0 16px rgba(0,255,231,0.7), 0 0 50px rgba(0,255,231,0.3)' }}>
+              SQUAD
+            </span>
+          </h2>
 
-                    <div style={{
-                        display: 'inline-flex', alignItems: 'center', gap: '8px',
-                        padding: '6px 16px', borderRadius: '4px', marginBottom: '24px',
-                        background: 'linear-gradient(90deg, rgba(0,255,231,0.12), transparent)',
-                        borderLeft: '3px solid #00ffe7',
-                        fontSize: '0.72rem', letterSpacing: '3px', textTransform: 'uppercase',
-                        color: '#00ffe7', fontFamily: 'RussoOne',
-                    }}>
-                        El Squad
-                    </div>
+          {/* Divider */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 12, margin: '12px 0 16px', width: '100%', maxWidth: 400, justifyContent: 'center' }}>
+            <div style={{ flex: 1, height: 1, background: 'linear-gradient(90deg, transparent, rgba(0,255,231,0.3))' }} />
+            <span style={{ fontFamily: 'RussoOne', fontSize: '0.6rem', letterSpacing: 4, color: 'rgba(0,255,231,0.4)' }}>◆</span>
+            <div style={{ flex: 1, height: 1, background: 'linear-gradient(90deg, rgba(0,255,231,0.3), transparent)' }} />
+          </div>
 
-                    <h2 style={{
-                        fontFamily: 'RussoOne',
-                        fontSize: 'clamp(2.5rem, 8vw, 5.5rem)',
-                        lineHeight: 1, margin: '0 0 16px 0',
-                        color: 'rgba(255,255,255,0.92)',
-                        letterSpacing: '-1px',
-                    }}>
-                        CONOCE EL{' '}
-                        <span style={{
-                            color: '#00ffe7',
-                            textShadow: '0 0 20px rgba(0,255,231,0.6), 0 0 50px rgba(0,255,231,0.3)',
-                        }}>
-                            SQUAD
-                        </span>
-                    </h2>
-                </div>
+          {/* Hint */}
+          <p style={{
+            fontFamily: 'RussoOne', fontSize: '0.6rem', letterSpacing: '4px',
+            color: 'rgba(255,255,255,0.18)', margin: 0,
+            textTransform: 'uppercase',
+          }}>
+            Pasa el cursor sobre un agente
+          </p>
+        </div>
 
-                {/* Selector de miembros */}
-                <SelectYourMember members={MEMBERS} />
-            </div>
-        </section>
-    );
+        <SelectYourMember members={MEMBERS} />
+      </div>
+    </section>
+  );
 };
 
 export default SquadSection;
